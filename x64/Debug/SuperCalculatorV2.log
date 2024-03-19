@@ -1,0 +1,4 @@
+﻿  main.c
+D:\LABS\DataStructures\SuperCalculatorV2\main.c(20,11): warning C4133: функция: несовместимые типы - из "char [9]" в "FILE *const "
+D:\LABS\DataStructures\SuperCalculatorV2\main.c(13): warning C4716: init: должна возвращать значение
+  SuperCalculatorV2.vcxproj -> D:\LABS\DataStructures\SuperCalculatorV2\x64\Debug\SuperCalculatorV2.exe
