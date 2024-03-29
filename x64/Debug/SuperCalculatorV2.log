@@ -1,4 +1,0 @@
-﻿  main.c
-D:\dev\SuperCalc\main.c(12,12): warning C4013: strlen: нет определения; предполагается "extern" с возвратом типа "int"
-D:\dev\SuperCalc\main.c(36,9): warning C4133: функция: несовместимые типы - из "char [3]" в "FILE *const "
-  SuperCalculatorV2.vcxproj -> D:\dev\SuperCalc\x64\Debug\SuperCalculatorV2.exe
