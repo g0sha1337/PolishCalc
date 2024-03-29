@@ -42,19 +42,57 @@ void ClearCharArray(char* arr) {
     }
 }
 void ClearToken(Token* token) {
-    token->data = '\0';
+    for (int i =0;i<16;i++) token->data[i] = '\0';
     token->type = NONE;
     token->value = 0.00;
 }
 void tokenizer(char* str,Token* array) {
     Token temp;
     ClearToken(&temp);
+
+    char MathFunctins[32][32] = {
+        "sin", "cos", "tg", "ctg", "arcsin", "arccos"
+    };
     //Token array[1024] = { "\0" }; //array with our tokens
     int ArrayPositionRN = 0;
     int counter = 0;
     int ParsingNumberRN = 0;
+    int ParsingFunctionRN = 0;
     char TempCharLine[256] = { '\0' }; // number in char array, for ex 3.14159265
     for (int i = 0; i < strlen(str) + 1; i++) {
+
+        if (ParsingFunctionRN) {
+            if (isalpha(str[i])) {
+                TempCharLine[counter] = str[i];
+                counter++;
+                continue;
+            }
+            else {
+                for (int i = 0; i < 7; i++) {
+                    if (strcmp(TempCharLine, MathFunctins[i])) {
+                        temp.type = FUNCTION;
+                        strcpy(temp.data, TempCharLine);
+                        array[ArrayPositionRN] = temp;
+                        ArrayPositionRN++;
+                        ClearToken(&temp);
+                        ClearCharArray(TempCharLine);
+                        break;
+                    }
+
+                }
+                if (TempCharLine[0] != '\0') { // if user entired some huynya
+                    temp.type = ERROR;
+                    strcpy(temp.data, TempCharLine);
+                    array[ArrayPositionRN] = temp;
+                    ArrayPositionRN++;
+                    ClearToken(&temp);
+                    ClearCharArray(TempCharLine);
+                }
+                ParsingFunctionRN = 0;
+                counter = 0;
+            }
+        }
+
         if (isdigit(str[i]) || str[i] == '.') {
             ParsingNumberRN = 1;
             TempCharLine[counter] = str[i];
@@ -71,10 +109,29 @@ void tokenizer(char* str,Token* array) {
             ClearToken(&temp);
             ParsingNumberRN = 0; //turn flag that we are parsing rn some number off
             
-        }
+        } 
+        
+        
         if (!ParsingNumberRN) { //åñëè ìû íå ïàðñèì ÷èñëî ïðÿìî ñåé÷àñ íà 
+            if (isalpha(str[i])) {
+
+                if (!(isalpha(str[i + 1]))) {
+                    temp.type = VARIABLE;
+                    temp.data[0] = str[i];
+                    array[ArrayPositionRN] = temp;
+                    ArrayPositionRN++;
+                    ClearToken(&temp);
+                    continue;
+                }
+                ParsingFunctionRN = 1;
+                TempCharLine[counter] = str[i];
+                counter++;
+                continue;
+
+            }         
             if (str[i] == '(') {
                 temp.type = BRACKET_OPEN;
+                temp.data[0] = '(';
                 array[ArrayPositionRN] = temp;
                 ArrayPositionRN++;
                 temp.type = NONE;
@@ -82,46 +139,52 @@ void tokenizer(char* str,Token* array) {
             }
             else if (str[i] == ')') {
                 temp.type = BRACKET_CLOSE;
+                temp.data[0] = ')';
                 array[ArrayPositionRN] = temp;
                 ArrayPositionRN++;
                 ClearToken(&temp);
             }
             else if (str[i] == '+') {
                 temp.type = OPERAND;
-                temp.data = '+';
+                temp.data[0] = '+';
                 array[ArrayPositionRN] = temp;
                 ArrayPositionRN++;
                 ClearToken(&temp);
             }
             else if (str[i] == '-') {
                 temp.type = OPERAND;
-                temp.data = '-';
+                temp.data[0] = '-';
                 array[ArrayPositionRN] = temp;
                 ArrayPositionRN++;
                 ClearToken(&temp);
             }
             else if (str[i] == '*') {
                 temp.type = OPERAND;
-                temp.data = '*';
+                temp.data[0] = '*';
                 array[ArrayPositionRN] = temp;
                 ArrayPositionRN++;
                 ClearToken(&temp);
             }
             else if (str[i] == '^') {
                 temp.type = OPERAND;
-                temp.data = '^';
+                temp.data[0] = '^';
                 array[ArrayPositionRN] = temp;
                 ArrayPositionRN++;
                 ClearToken(&temp);
             }
             else if (str[i] == '!') {
                 temp.type = OPERAND;
-                temp.data = '!';
+                temp.data[0] = '!';
                 array[ArrayPositionRN] = temp;
                 ArrayPositionRN++;
                 ClearToken(&temp);
-            }
+            } 
+            
+
+
+
         }
+
         // ÄÎÏÈÑÀÒÜ ÒÐÈÃÎÍÎÌÅÒÐÈÞ È ÏÐÎ×ÞÓ ÕÓÉÍÞ!!!
 
     }
@@ -148,19 +211,19 @@ void printTokens(Token* tokens, size_t length) {
             printf("Type: VALUE, Value: %f", tokens[i].value);
             break;
         case VARIABLE:
-            printf("Type: VARIABLE, Data: %c", tokens[i].data);
+            printf("Type: VARIABLE, Data: %s", tokens[i].data);
             break;
         case OPERAND:
-            printf("Type: OPERAND, Data: %c", tokens[i].data);
+            printf("Type: OPERAND, Data: %s", tokens[i].data);
             break;
         case FUNCTION:
-            printf("Type: FUNCTION, Data: %c", tokens[i].data);
+            printf("Type: FUNCTION, Data: %s", tokens[i].data);
             break;
         case BRACKET_OPEN:
-            printf("Type: BRACKET_OPEN, Data: %c", tokens[i].data);
+            printf("Type: BRACKET_OPEN, Data: %s", tokens[i].data);
             break;
         case BRACKET_CLOSE:
-            printf("Type: BRACKET_CLOSE, Data: %c", tokens[i].data);
+            printf("Type: BRACKET_CLOSE, Data: %s", tokens[i].data);
             break;
         case ERROR:
             printf("Type: ERROR");

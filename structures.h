@@ -14,7 +14,7 @@ typedef struct {
 		
 	} type;
 	
-	char data;
+	char data[16];
 	double value;
 	
 } Token;
