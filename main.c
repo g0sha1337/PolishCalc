@@ -24,7 +24,6 @@ int contain(char x, char* str) {
 
 int CheckBrackets(Token* tokens, int length) {
     Stack* stack = NewStack();
-
     for (int i = 0; i < length; i++) {
         if (tokens[i].type == BRACKET_OPEN) {
             push(stack, tokens[i]);
@@ -41,24 +40,18 @@ int CheckBrackets(Token* tokens, int length) {
             }
         }
     }
-
     if (isEmptyStack(stack)) {
-        //  brackets are balanced
-        return 1;
+        return 1; //  brackets are balanced
     }
     else {
-        // Unpaired opening brackets remain
-        return 0;
+        return 0; // Unpaired opening brackets remain
     }
 }
 
 
 
 
-//int PriorityDefiner(Token token) {
-//    return 0;
-//
-//}
+
 
 int CheckInput(char* str) {
     for (int i = 0; i < strlen(str); i++) {
