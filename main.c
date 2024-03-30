@@ -9,7 +9,7 @@
 #include "structures.h"
 
 
-char WhitelistChar[] = " 1234567890+-^!qwertyuiopasdfghjklzxcvbnm.,";
+char WhitelistChar[] = " 1234567890+-^!/()abcdefghijklmnopqrstuvwxyz.,";
 
 
 
@@ -29,9 +29,11 @@ void ClearLine(char* equasion) {
             trimmed[trimIndex++] = equasion[i];
     }
     strcpy(equasion, trimmed);
-    for (int i = 0; i < strlen(equasion); i++) {
+    for (int i = 0; i < strlen(equasion); i++) { //swap , to . and Upper to Lowers 
         if (equasion[i] == ',') equasion[i] = '.';
+        if (equasion[i] >= 'A' && equasion[i] <= 'Z') equasion[i] = equasion[i] + 32;
     }
+    
 }
 double convertStringToDouble(const char* str) {
     return strtod(str, NULL);
@@ -205,7 +207,7 @@ void tokenizer(char* str,Token* array) {
         }
     }
 }
-int CheckBrackets(Token* tokens, int length){ 
+int CheckBrackets(Token* tokens, int length) {
     Stack* stack = NewStack();
 
     for (int i = 0; i < length; i++) {
@@ -213,19 +215,29 @@ int CheckBrackets(Token* tokens, int length){
             push(stack, tokens[i]);
         }
         else if (tokens[i].type == BRACKET_CLOSE) {
+            if (isEmptyStack(stack)) {
+                // Closing bracket without a corresponding opening bracket
+                return 0;
+            }
             Token PopedToken = pop(stack);
             if (PopedToken.type != BRACKET_OPEN) {
+                // Mismatch of bracket types
                 return 0;
             }
         }
     }
-    if (stack->start == NULL) {
+
+    if (isEmptyStack(stack)) {
+        //  brackets are balanced
         return 1;
     }
     else {
+        // Unpaired opening brackets remain
         return 0;
     }
-};
+}
+
+
 
 
 //int PriorityDefiner(Token token) {
@@ -233,7 +245,12 @@ int CheckBrackets(Token* tokens, int length){
 //
 //}
 
-
+int CheckInput(char* str) {
+    for (int i = 0; i < strlen(str); i++) {
+        if (!(contain(str[i], WhitelistChar))) return 0;
+    }
+    return 1;
+}
 void printTokens(Token* tokens, size_t length) {
     for (size_t i = 0; i < length; ++i) {
         printf("\nToken %zu: ", i);
@@ -311,11 +328,12 @@ void main() {
     length++;
     Token* tokens = (Token*)malloc(length * sizeof(Token)); //the number of tokens cannot exceed the length of the string
     //check correct expression
+    
     tokenizer(InputLine, tokens);
-    if (CheckBrackets(tokens, length)) {
+    
+    if (CheckBrackets(tokens, length) && CheckInput(InputLine)) { //works only if input was corrects
         printf("Everything OK");
                
-        
             
         
         
