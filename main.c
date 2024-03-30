@@ -8,7 +8,7 @@
 #include "structures.h"
 
 
-char WhitelistChar[] = " 1234567890+-^!/qwertyuiopasdfghjklzxcvbnm.,";
+char WhitelistChar[] = " 1234567890+-^!qwertyuiopasdfghjklzxcvbnm.,";
 
 
 
@@ -30,8 +30,7 @@ void ClearLine(char* equasion) {
     strcpy(equasion, trimmed);
     for (int i = 0; i < strlen(equasion); i++) {
         if (equasion[i] == ',') equasion[i] = '.';
-    } 
-    
+    }
 }
 double convertStringToDouble(const char* str) {
     return strtod(str, NULL);
@@ -124,7 +123,9 @@ void tokenizer(char* str,Token* array) {
             }
             break;
         }
-		if (!ParsingNumberRN) { 
+
+
+        if (!ParsingNumberRN) { //åñëè ìû íå ïàðñèì ÷èñëî ïðÿìî ñåé÷àñ íà 
             if (isalpha(str[i])) {
 
                 if (!(isalpha(str[i + 1]))) {
@@ -209,12 +210,11 @@ int CheckBrackets(Token* tokens, int length){
             push(stack, tokens[i]);
 
         }
-        else if (tokens[i].type = BRACKET_CLOSE) {
+        /*else if (tokens[i].type = BRACKET_CLOSE) {
             Token PopedToken = pop(stack);
 
-
-        }
-   }
+        }*/
+    }
 
 };
 
@@ -293,7 +293,7 @@ void main() {
     ClearLine(InputLine);
     int length = strlen(InputLine);
     //check correct expression
-    if (/*CheckValid(InputLine)*/1) { //Ã„ÃŽÃÃˆÃ‘Ã€Ã’Ãœ Ã—Ã…ÃŠÃ…Ã Ã‚Ã‘Ã… Ã‹Ãˆ Ã•ÃŽÃÃŽÃ˜ÃŽ Ã‚ ÃÃ‹Ã€ÃÃ… Ã‘ÃŠÃŽÃÃŽÃŠ!!!!!!!!
+    if (/*CheckValid(InputLine)*/1) { //ÄÎÏÈÑÀÒÜ ×ÅÊÅÐ ÂÑÅ ËÈ ÕÎÐÎØÎ Â ÏËÀÍÅ ÑÊÎÁÎÊ!!!!!!!!
               
                
         tokenizer(InputLine, tokens);
