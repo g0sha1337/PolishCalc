@@ -13,9 +13,21 @@ typedef struct {
 		ERROR
 		
 	} type;
+	enum Func {
+		__sin,
+		__cos,
+		__tg,
+		__ctg,
+		__arcsin,
+		__arccos,
+		__arctg,
+		__arcctg,
+		__NONE,
+	} func;
+	char data;
 	
-	char data[16];
 	double value;
+
 	
 } Token;
 
