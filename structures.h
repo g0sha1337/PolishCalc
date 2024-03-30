@@ -51,11 +51,12 @@ typedef struct qNode {
 typedef struct {
 	qNode* front, * rear;
 } Queue;
-
-
-
-
-
-
-
-
+Token peek(const Stack* s);
+Token pop(Stack* s);
+void initStack(Stack* stack);
+Stack* NewStack();
+void push(Stack* stack, Token value);
+void initQueue(Queue* q);
+int isEmptyQueue(const Queue* q);
+void enqueue(Queue* q, Token value);
+Token dequeue(Queue* q);

@@ -69,7 +69,7 @@ void tokenizer(char* str,Token* array) {
                 continue;
             }
             else {
-                for (int i = 0; i < 8; i++) {
+                for (int i = 0; i < 10; i++) {
                     if (strcmp(TempCharLine, MathFunctins[i]) == 0) {
                         temp.type = FUNCTION;
                         temp.func = i;
@@ -206,17 +206,24 @@ int CheckBrackets(Token* tokens, int length){
     Stack* stack = NewStack();
 
     for (int i = 0; i < length; i++) {
-        if (tokens[i].type = BRACKET_OPEN) {
+        if (tokens[i].type == BRACKET_OPEN) {
             push(stack, tokens[i]);
-
         }
-        /*else if (tokens[i].type = BRACKET_CLOSE) {
+        else if (tokens[i].type == BRACKET_CLOSE) {
             Token PopedToken = pop(stack);
-
-        }*/
+            if (PopedToken.type != BRACKET_OPEN) {
+                return 0;
+            }
+        }
     }
-
+    if (stack->start == NULL) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
 };
+
 
 //int PriorityDefiner(Token token) {
 //    return 0;
@@ -267,6 +274,9 @@ void printTokens(Token* tokens, size_t length) {
             case __arcctg:
                 printf("arcctg");
                 break;
+            case __sqrt:
+                printf("sqrt");
+                break;
             case __NONE:
                 printf("none");
                 break;
@@ -293,10 +303,11 @@ void main() {
     ClearLine(InputLine);
     int length = strlen(InputLine);
     //check correct expression
-    if (/*CheckValid(InputLine)*/1) { //днохяюрэ вейеп бяе кх унпньн б окюме яйнанй!!!!!!!!
-              
+    tokenizer(InputLine, tokens);
+    if (CheckBrackets(tokens, length)) { //днохяюрэ вейеп бяе кх унпньн б окюме яйнанй!!!!!!!!
+        printf("Everything OK");
                
-        tokenizer(InputLine, tokens);
+        
             
         
         
