@@ -8,7 +8,7 @@
 #include "structures.h"
 
 
-char WhitelistChar[] = " 1234567890+-^!qwertyuiopasdfghjklzxcvbnm.,";
+char WhitelistChar[] = " 1234567890+-^!-qwertyuiopasdfghjklzxcvbnm.,";
 
 
 
@@ -116,7 +116,7 @@ void tokenizer(char* str,Token* array) {
         }
         
         
-        if (!ParsingNumberRN) { //если мы не парсим число пр€мо сейчас на 
+        if (!ParsingNumberRN) { //√•√±√Ђ√® √ђ√ї √≠√• √ѓ√†√∞√±√®√ђ √Ј√®√±√Ђ√Ѓ √ѓ√∞√њ√ђ√Ѓ √±√•√©√Ј√†√± √≠√† 
             if (isalpha(str[i])) {
 
                 if (!(isalpha(str[i + 1]))) {
@@ -198,7 +198,7 @@ void tokenizer(char* str,Token* array) {
 
         }
 
-        // ƒќѕ»—ј“№ “–»√ќЌќћ≈“–»ё » ѕ–ќ„ё” ’”…Ќё!!!
+        // √Д√О√П√И√С√А√Т√Ь √Т√Р√И√Г√О√Н√О√М√Е√Т√Р√И√Ю √И √П√Р√О√Ч√Ю√У √Х√У√Й√Н√Ю!!!
 
     }
 
@@ -280,7 +280,7 @@ void main() {
     Token tokens[2048];
     ClearLine(InputLine);
     //check correct expression
-    if (/*CheckValid(InputLine)*/1) { //ƒќѕ»—ј“№ „≈ ≈– ¬—≈ Ћ» ’ќ–ќЎќ ¬ ѕЋјЌ≈ — ќЅќ !!!!!!!!
+    if (/*CheckValid(InputLine)*/1) { //√Д√О√П√И√С√А√Т√Ь √Ч√Е√К√Е√Р √В√С√Е √Л√И √Х√О√Р√О√Ш√О √В √П√Л√А√Н√Е √С√К√О√Б√О√К!!!!!!!!
               
                
         tokenizer(InputLine, tokens);
