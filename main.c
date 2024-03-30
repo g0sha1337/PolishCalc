@@ -76,7 +76,7 @@ void printTokens(Token* tokens, size_t length) {
             printf("Type: OPERAND, Data: %c", tokens[i].data);
             break;
         case END:
-            printf("Type: END, Data: %c", tokens[i].data);
+            printf("Type: END");
             break;
         case FUNCTION:
             printf("Type: FUNCTION, Data: %c, Function type: ", tokens[i].data);
@@ -139,7 +139,7 @@ void main() {
     
     tokenizer(InputLine, tokens);
     
-    if (CheckBrackets(tokens, length) && CheckInput(InputLine)) { //works only if input was corrects
+    if (CheckBrackets(tokens, length) && CheckInput(InputLine) && CheckTokenPositions(tokens)) { //works only if input was corrects
         printf("Everything OK");
                
             

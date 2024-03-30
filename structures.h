@@ -50,7 +50,8 @@ typedef struct qNode {
 	struct qNode* next;
 } qNode;
 typedef struct {
-	qNode* front, * rear;
+	qNode* front; // pered
+	qNode* rear; // zad
 } Queue;
 Token peek(const Stack* s);
 Token pop(Stack* s);

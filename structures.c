@@ -22,7 +22,7 @@ void push(Stack* stack, Token value) {
 }
 Token pop(Stack* s) {
     if (isEmptyStack(s)) {
-        fprintf(stderr, "Stack is empty, cannot pop!n");
+        perror("Stack is empty, cannot pop!n");
         exit(EXIT_FAILURE);
     }
     Node* temp = s->start;
@@ -33,7 +33,7 @@ Token pop(Stack* s) {
 }
 Token peek(const Stack* s) {
     if (isEmptyStack(s)) {
-        fprintf(stderr, "Stack is empty, cannot peek!n");
+        perror("Stack is empty, cannot peek!n");
         exit(EXIT_FAILURE);
     }
     return s->start->token;
@@ -61,7 +61,7 @@ void enqueue(Queue* q, Token value) {
 
 Token dequeue(Queue* q) {
     if (isEmptyQueue(q)) {
-        fprintf(stderr, "Queue is empty, cannot dequeue!n");
+        perror("Queue is empty, cannot dequeue!n");
         exit(EXIT_FAILURE);
     }
     qNode* temp = q->front;
