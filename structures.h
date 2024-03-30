@@ -10,7 +10,8 @@ typedef struct {
 		FUNCTION,
 		BRACKET_OPEN,
 		BRACKET_CLOSE,
-		ERROR
+		ERROR, 
+		END
 		
 	} type;
 	enum Func {

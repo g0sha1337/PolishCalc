@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <malloc.h>
 #include <ctype.h>
 #include <math.h>
 
@@ -54,13 +55,13 @@ void tokenizer(char* str,Token* array) {
     char MathFunctins[32][16] = {
         "sin", "cos", "tg", "ctg", "arcsin", "arccos","arctg","arcctg","sqrt"
     };
-    //Token array[1024] = { "\0" }; //array with our tokens
+    //Token array[1024] = { "\0" }; //array with our tokens (cringe)
     int ArrayPositionRN = 0;
     int counter = 0;
     int ParsingNumberRN = 0;
     int ParsingFunctionRN = 0;
-    char TempCharLine[256] = { '\0' }; // number in char array, for ex 3.14159265
-    for (int i = 0; i < strlen(str) + 1; i++) {
+    char TempCharLine[256] = { '\0' }; // bringing number in char array, for ex 3.14159265
+    for (int i = 0; i <= strlen(str); i++) { //<= because we need to parse \0 to add determine token
 
         if (ParsingFunctionRN) {
             if (isalpha(str[i])) {
@@ -121,11 +122,13 @@ void tokenizer(char* str,Token* array) {
                 ClearCharArray(TempCharLine);
                 ClearToken(&temp);
             }
+            temp.type = END;
+            array[ArrayPositionRN] = temp;
             break;
         }
 
 
-        if (!ParsingNumberRN) { //åñëè ìû íå ïàðñèì ÷èñëî ïðÿìî ñåé÷àñ íà 
+        if (!ParsingNumberRN) { //If we not parsing some number right now we can parse other data
             if (isalpha(str[i])) {
 
                 if (!(isalpha(str[i + 1]))) {
@@ -247,6 +250,9 @@ void printTokens(Token* tokens, size_t length) {
         case OPERAND:
             printf("Type: OPERAND, Data: %c", tokens[i].data);
             break;
+        case END:
+            printf("Type: END, Data: %c", tokens[i].data);
+            break;
         case FUNCTION:
             printf("Type: FUNCTION, Data: %c, Function type: ", tokens[i].data);
             switch (tokens[i].func) {
@@ -299,12 +305,14 @@ void main() {
     char InputLine[100] = { '\0' };
     printf("........................................................................................................................\n\nEnter equasion to count: ");
     scanf("%99[^\n]", InputLine);
-    Token tokens[2048];
+    
     ClearLine(InputLine);
     int length = strlen(InputLine);
+    length++;
+    Token* tokens = (Token*)malloc(length * sizeof(Token)); //the number of tokens cannot exceed the length of the string
     //check correct expression
     tokenizer(InputLine, tokens);
-    if (CheckBrackets(tokens, length)) { //ÄÎÏÈÑÀÒÜ ×ÅÊÅÐ ÂÑÅ ËÈ ÕÎÐÎØÎ Â ÏËÀÍÅ ÑÊÎÁÎÊ!!!!!!!!
+    if (CheckBrackets(tokens, length)) {
         printf("Everything OK");
                
         
@@ -317,7 +325,7 @@ void main() {
         printf("Incorrect equasion");
 
     }
-    printTokens(tokens, 15);
+    printTokens(tokens, length);
     
-    
+    free(tokens);
 }
