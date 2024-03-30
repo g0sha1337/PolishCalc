@@ -22,6 +22,7 @@ typedef struct {
 		__arccos,
 		__arctg,
 		__arcctg,
+		__sqrt,
 		__NONE,
 	} func;
 	char data;
@@ -39,7 +40,7 @@ typedef struct {
 } Node;
 
 typedef struct {
-    Node* top;
+    Node* start;
 } Stack;
 
 //queueueueu

@@ -52,7 +52,7 @@ void tokenizer(char* str,Token* array) {
     ClearToken(&temp);
 
     char MathFunctins[32][16] = {
-        "sin", "cos", "tg", "ctg", "arcsin", "arccos","arctg","arcctg"
+        "sin", "cos", "tg", "ctg", "arcsin", "arccos","arctg","arcctg","sqrt"
     };
     //Token array[1024] = { "\0" }; //array with our tokens
     int ArrayPositionRN = 0;
@@ -109,13 +109,22 @@ void tokenizer(char* str,Token* array) {
             ClearCharArray(TempCharLine);
             ClearToken(&temp);
             ParsingNumberRN = 0; //turn flag that we are parsing rn some number off
-            
-        } 
+
+        }
         if (str[i] == '\0') { // if we reaised end of the line
+            if (ParsingNumberRN) {
+                temp.type = VALUE;
+                temp.value = convertStringToDouble(TempCharLine);
+                array[ArrayPositionRN] = temp;
+                ArrayPositionRN++;
+                counter = 0;
+                ClearCharArray(TempCharLine);
+                ClearToken(&temp);
+            }
             break;
         }
-        
-        
+
+
         if (!ParsingNumberRN) { //åñëè ìû íå ïàðñèì ÷èñëî ïðÿìî ñåé÷àñ íà 
             if (isalpha(str[i])) {
 
@@ -132,7 +141,7 @@ void tokenizer(char* str,Token* array) {
                 counter++;
                 continue;
 
-            }         
+            }
             if (str[i] == '(') {
                 temp.type = BRACKET_OPEN;
                 temp.data = '(';
@@ -182,7 +191,7 @@ void tokenizer(char* str,Token* array) {
                 array[ArrayPositionRN] = temp;
                 ArrayPositionRN++;
                 ClearToken(&temp);
-            } 
+            }
             else if (str[i] == '/') {
                 temp.type = OPERAND;
                 temp.data = '/';
@@ -190,22 +199,24 @@ void tokenizer(char* str,Token* array) {
                 ArrayPositionRN++;
                 ClearToken(&temp);
             }
-            
+        }
+    }
+}
+int CheckBrackets(Token* tokens, int length){ 
+    Stack* stack = NewStack();
 
-            
-
-
+    for (int i = 0; i < length; i++) {
+        if (tokens[i].type = BRACKET_OPEN) {
+            push(stack, tokens[i]);
 
         }
+        else if (tokens[i].type = BRACKET_CLOSE) {
+            Token PopedToken = pop(stack);
 
-        // ÄÎÏÈÑÀÒÜ ÒÐÈÃÎÍÎÌÅÒÐÈÞ È ÏÐÎ×ÞÓ ÕÓÉÍÞ!!!
-
+        }
     }
 
-}
-//int CheckValid(char* InputLine) {
-//
-//};
+};
 
 //int PriorityDefiner(Token token) {
 //    return 0;
@@ -276,9 +287,11 @@ void printTokens(Token* tokens, size_t length) {
 void main() {
     
     char InputLine[100] = { '\0' };
+    printf("........................................................................................................................\n\nEnter equasion to count: ");
     scanf("%99[^\n]", InputLine);
     Token tokens[2048];
     ClearLine(InputLine);
+    int length = strlen(InputLine);
     //check correct expression
     if (/*CheckValid(InputLine)*/1) { //ÄÎÏÈÑÀÒÜ ×ÅÊÅÐ ÂÑÅ ËÈ ÕÎÐÎØÎ Â ÏËÀÍÅ ÑÊÎÁÎÊ!!!!!!!!
               
@@ -290,7 +303,7 @@ void main() {
         
     }
     else {
-        printf("Incorrect ");
+        printf("Incorrect equasion");
 
     }
     printTokens(tokens, 15);
