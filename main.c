@@ -8,7 +8,7 @@
 #include "structures.h"
 
 
-char WhitelistChar[] = " 1234567890+-^!-qwertyuiopasdfghjklzxcvbnm.,";
+char WhitelistChar[] = " 1234567890+-^!/qwertyuiopasdfghjklzxcvbnm.,";
 
 
 
@@ -30,7 +30,8 @@ void ClearLine(char* equasion) {
     strcpy(equasion, trimmed);
     for (int i = 0; i < strlen(equasion); i++) {
         if (equasion[i] == ',') equasion[i] = '.';
-    }
+    } 
+    
 }
 double convertStringToDouble(const char* str) {
     return strtod(str, NULL);
