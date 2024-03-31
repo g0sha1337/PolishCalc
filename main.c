@@ -8,7 +8,7 @@
 
 #include "structures.h"
 #include "tokenizer.h"
-
+#include "calculator.h"
 char WhitelistChar[] = " 1234567890+-^!/()abcdefghijklmnopqrstuvwxyz.,";
 
 
@@ -125,6 +125,70 @@ void printTokens(Token* tokens, size_t length) {
         }
     }
 }
+void PrintToken(Token token) {
+
+    switch (token.type) {
+    case NONE:
+        printf("Type: NONE");
+        break;
+    case VALUE:
+        printf("Type: VALUE, Value: %f", token.value);
+        break;
+    case VARIABLE:
+        printf("Type: VARIABLE, Data: %c", token.data);
+        break;
+    case OPERAND:
+        printf("Type: OPERAND, Data: %c", token.data);
+        break;
+    case END:
+        printf("Type: END");
+        break;
+    case FUNCTION:
+        printf("Type: FUNCTION, Data: %c, Function type: ", token.data);
+        switch (token.func) {
+        case __sin:
+            printf("sin");
+            break;
+        case __cos:
+            printf("cos");
+            break;
+        case __tg:
+            printf("tg");
+            break;
+        case __ctg:
+            printf("ctg");
+            break;
+        case __arcsin:
+            printf("arcsin");
+            break;
+        case __arccos:
+            printf("arccos");
+            break;
+        case __arctg:
+            printf("arctg");
+            break;
+        case __arcctg:
+            printf("arcctg");
+            break;
+        case __sqrt:
+            printf("sqrt");
+            break;
+        case __NONE:
+            printf("none");
+            break;
+        }
+        break;
+    case BRACKET_OPEN:
+        printf("Type: BRACKET_OPEN, Data: %c", token.data);
+        break;
+    case BRACKET_CLOSE:
+        printf("Type: BRACKET_CLOSE, Data: %c", token.data);
+        break;
+    case ERROR:
+        printf("Type: ERROR");
+        break;
+    }
+}
 void main() {
     
     char InputLine[100] = { '\0' };
@@ -138,10 +202,18 @@ void main() {
     //check correct expression
     
     tokenizer(InputLine, tokens);
-    
+    /*if (!(CheckBrackets(tokens, length))) printf("CheckBrackets FAIL\n");
+    if (!(CheckInput(InputLine))) printf("CheckInput FAIL\n");
+    if (!(CheckTokenPositions(tokens))) printf("CheckTokenPositions FAIL\n");*/
     if (CheckBrackets(tokens, length) && CheckInput(InputLine) && CheckTokenPositions(tokens)) { //works only if input was corrects
         printf("Everything OK");
-               
+        Token* PolishTokens = (Token*)malloc(length * sizeof(Token));
+        PolishTokens = ConverterToPolishs(tokens);
+        for (int i = 0; i < length; i++) {
+            printf("\ntoken-%d: ", i);
+            PrintToken(dequeue(PolishTokens));
+
+        }
             
         
         

@@ -15,6 +15,8 @@ void ClearLine(char* equasion) {
         if (equasion[i] >= 'A' && equasion[i] <= 'Z') equasion[i] = equasion[i] + 32;
     }
 }
+
+
 double convertStringToDouble(const char* str) {
     return strtod(str, NULL);
 }
@@ -178,17 +180,15 @@ void tokenizer(char* str, Token* array) {
         }
     }
 }
-
 int CheckTokenPositions(Token* tokens) { // avoid 2++ and some other incorrect input
     int i = 0;
     while (tokens[i].type != END) {
         if (
-            (tokens[i].type == FUNCTION && tokens[i + 1].type == BRACKET_OPEN) || //  if sqrt2 or sinx instead of sqrt(2) and sin(x)
+            (tokens[i].type == FUNCTION && tokens[i + 1].type != BRACKET_OPEN) || //  if sqrt2 or sinx instead of sqrt(2) and sin(x)
             (tokens[i].type == tokens[i + 1].type && ((tokens[i].type != BRACKET_CLOSE) || (tokens[i].type != BRACKET_OPEN))) || // if *+ or +- (exception with )( )
             (tokens[i].type == ERROR)
             ) return 0;
         i++;
     }
     return 1;
-    
 }

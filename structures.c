@@ -39,6 +39,11 @@ Token peek(const Stack* s) {
     return s->start->token;
 }
 //queue
+Queue* NewQueue() {
+    Queue* queue = (Queue*)malloc(sizeof(Queue));
+    queue->front = NULL;
+    return queue;
+}
 
 void initQueue(Queue* q) {
     q->front = q->rear = NULL;
@@ -59,6 +64,7 @@ void enqueue(Queue* q, Token value) {
     }
 }
 
+
 Token dequeue(Queue* q) {
     if (isEmptyQueue(q)) {
         perror("Queue is empty, cannot dequeue!n");
@@ -73,7 +79,6 @@ Token dequeue(Queue* q) {
     free(temp);
     return dequeuedValue;
 }
-
 
 
 

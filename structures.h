@@ -1,5 +1,4 @@
 #pragma once
-
 //stack
 typedef struct {
 	enum Type {
@@ -32,22 +31,18 @@ typedef struct {
 
 	
 } Token;
-
-
 typedef struct {
 	Token token;
 	void* next;
 	void* prev;
 } Node;
-
 typedef struct {
     Node* start;
 } Stack;
-
 //queueueueu
 typedef struct qNode {
 	Token value;
-	struct qNode* next;
+	struct qNode* next; //link to next element queue
 } qNode;
 typedef struct {
 	qNode* front; // pered
@@ -59,6 +54,8 @@ void initStack(Stack* stack);
 Stack* NewStack();
 void push(Stack* stack, Token value);
 void initQueue(Queue* q);
+Queue* NewQueue();
 int isEmptyQueue(const Queue* q);
 void enqueue(Queue* q, Token value);
 Token dequeue(Queue* q);
+
