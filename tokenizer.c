@@ -32,7 +32,12 @@ void ClearToken(Token* token) {
     token->value = 0.00;
     token->func = NONE;
 }
-void tokenizer(char* str, Token* array) {
+Token* tokenizer(char* str, /*Token* array*/int size) {
+    Token* array = (Token*)malloc(size * sizeof(Token));
+    if (array == NULL) {
+        printf("\nKURWA HEAP KURWA!!1!\n");
+        exit(EXIT_FAILURE);
+    }
     Token temp;
     ClearToken(&temp);
     char MathFunctins[32][16] = {
@@ -179,16 +184,18 @@ void tokenizer(char* str, Token* array) {
             }
         }
     }
+    return array;
 }
 int CheckTokenPositions(Token* tokens) { // avoid 2++ and some other incorrect input
+    // sin ( 2 * ( 2 - 1 ) )
     int i = 0;
     while (tokens[i].type != END) {
-        if (
+        if ( //trying to find wrong token positions
             (tokens[i].type == FUNCTION && tokens[i + 1].type != BRACKET_OPEN) || //  if sqrt2 or sinx instead of sqrt(2) and sin(x)
-            (tokens[i].type == tokens[i + 1].type && ((tokens[i].type != BRACKET_CLOSE) || (tokens[i].type != BRACKET_OPEN))) || // if *+ or +- (exception with )( )
+            (tokens[i].type == tokens[i+1].type && (!((tokens[i].type == BRACKET_CLOSE && tokens[i+1].type == BRACKET_CLOSE) ||(tokens[i].type == BRACKET_OPEN && tokens[i+1].type == BRACKET_OPEN)))) ||// if *+ or +- (exception with )( )
             (tokens[i].type == ERROR)
             ) return 0;
         i++;
     }
-    return 1;
+    return 1; // everything good
 }

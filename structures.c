@@ -21,9 +21,10 @@ void push(Stack* stack, Token value) {
     stack->start = newNode;
 }
 Token pop(Stack* s) {
+    Token End;
+    End.type = END;
     if (isEmptyStack(s)) {
-        perror("Stack is empty, cannot pop!n");
-        exit(EXIT_FAILURE);
+        return End;
     }
     Node* temp = s->start;
     Token poppedValue = temp->token;
@@ -32,9 +33,10 @@ Token pop(Stack* s) {
     return poppedValue;
 }
 Token peek(const Stack* s) {
+    Token End;
+    End.type = END;
     if (isEmptyStack(s)) {
-        perror("Stack is empty, cannot peek!n");
-        exit(EXIT_FAILURE);
+        return End;
     }
     return s->start->token;
 }

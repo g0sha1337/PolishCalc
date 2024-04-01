@@ -9,8 +9,7 @@
 #include "structures.h"
 #include "tokenizer.h"
 #include "calculator.h"
-char WhitelistChar[] = " 1234567890+-^!/()abcdefghijklmnopqrstuvwxyz.,";
-
+char WhitelistChar[] = " 1234567890+-^*!/()abcdefghijklmnopqrstuvwxyz.,";
 
 
 int contain(char x, char* str) {
@@ -189,7 +188,7 @@ void PrintToken(Token token) {
         break;
     }
 }
-void main() {
+int main() {
     
     char InputLine[100] = { '\0' };
     printf("........................................................................................................................\n\nEnter equasion to count: ");
@@ -198,17 +197,21 @@ void main() {
     ClearLine(InputLine);
     int length = strlen(InputLine);
     length++;
-    Token* tokens = (Token*)malloc(length * sizeof(Token)); //the number of tokens cannot exceed the length of the string
+    Token* tokens = tokenizer(InputLine, length);
+    printTokens(tokens, length);
+    //Token* tokens = (Token*)malloc(length * sizeof(Token)); //the number of tokens cannot exceed the length of the string
     //check correct expression
     
-    tokenizer(InputLine, tokens);
-    /*if (!(CheckBrackets(tokens, length))) printf("CheckBrackets FAIL\n");
-    if (!(CheckInput(InputLine))) printf("CheckInput FAIL\n");
-    if (!(CheckTokenPositions(tokens))) printf("CheckTokenPositions FAIL\n");*/
+    /*if (!(CheckBrackets(tokens, length))) printf("\nCheckBrackets FAIL\n");
+    if (!(CheckInput(InputLine))) printf("\nCheckInput FAIL\n");
+    if (!(CheckTokenPositions(tokens))) printf("\nCheckTokenPositions FAIL\n");*/
     if (CheckBrackets(tokens, length) && CheckInput(InputLine) && CheckTokenPositions(tokens)) { //works only if input was corrects
-        printf("Everything OK");
-        Token* PolishTokens = (Token*)malloc(length * sizeof(Token));
-        PolishTokens = ConverterToPolishs(tokens);
+        printf("\nEverything OK\n");
+
+        Queue* PolishTokens = ConvertToPolishs(tokens,length);
+        
+        
+        printf("\nPOLISH TOKENS:\n");
         for (int i = 0; i < length; i++) {
             printf("\ntoken-%d: ", i);
             PrintToken(dequeue(PolishTokens));
@@ -217,13 +220,15 @@ void main() {
             
         
         
-        
+        free(PolishTokens);
     }
     else {
         printf("Incorrect equasion");
 
     }
-    printTokens(tokens, length);
+    //printTokens(tokens, length);
     
     free(tokens);
+    
+    return 0;
 }

@@ -7,9 +7,23 @@
 
 int PriorityDefiner(Token token) { //def
 	
-	// write prioritizer hehehe
+	switch (token.type)
+	{
+		case OPERAND:
+			if (token.data == '-' || token.data == '+') {
+				return 1;
+			}
+			else if (token.data == '*' || token.data == '/') {
+				return 2;
+			}
+			else if (token.data == '!' || token.data == '^') {
+				return 3;
+			}
+			
+	}
 
-	return 0;
+
+	return 0; // case indefined
 }
 void ClearSomeToken(Token* token) {
 	token->data = '\0';
@@ -18,9 +32,8 @@ void ClearSomeToken(Token* token) {
 	token->func = NONE;
 }
 
-Queue* ConverterToPolishs(Token* tokens) { //MANY BAGS!!! FIXXX THEM TOMORROW
-	Queue* PolishTokens = NewQueue();
-	initQueue(PolishTokens);
+Queue* ConvertToPolishs(Token* tokens, int size) { //MANY BAGS!!! FIXXX THEM TOMORROW
+
 
 
 	int i = 0;
@@ -32,40 +45,33 @@ Queue* ConverterToPolishs(Token* tokens) { //MANY BAGS!!! FIXXX THEM TOMORROW
 	int BracketFlag = 0;
 	Token temp;
 	while (tokens[i].type != END) { // semestr.online/informatics/polish.php
-		if (tokens[i].type == OPERAND && tokens[i].data == '!') {
+
+		if (tokens[i].type == VALUE || tokens[i].type == VARIABLE) {
 			enqueue(que, tokens[i]);
-		} else if (tokens[i].type == FUNCTION) {
-			push(stack, tokens[i]);
-		} else if (tokens[i].type == BRACKET_OPEN) {
-			BracketFlag = 1;
-			push(stack, tokens[i]);
 		}
-		else if (tokens[i].type == OPERAND) {
+		else if (tokens[i].type == BRACKET_OPEN) {
 			push(stack, tokens[i]);
 		}
 		else if (tokens[i].type == BRACKET_CLOSE) {
-			while (peek(stack).type != BRACKET_OPEN) {
-				
-				temp = pop(stack);
-				enqueue(que, temp);
-
+			while (!(isEmptyStack(stack)) && peek(stack).type != BRACKET_OPEN) {
+				enqueue(que, pop(stack));
 			}
-			if (tokens[i].type == BRACKET_CLOSE) pop(stack);
-
+			pop(stack); // remove (
 		}
-		else {
-			enqueue(que, tokens[i]);
+		else if (tokens[i].type == OPERAND) {
+			while (peek(stack).type!= END) { // ERROR HERE, CHECK LATER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				if (PriorityDefiner(tokens[i]) <= PriorityDefiner(peek(stack))) {
+					enqueue(que, pop(stack));
+				}
+			}
+			push(stack, tokens[i]);
 		}
-		
-		ClearSomeToken(&temp);
 
 		i++;
 	}
-	while (stack->start!=NULL) { // while empty stack
-		Token temp;
-		temp = pop(stack);
-		enqueue(que, temp);
-		ClearSomeToken(&temp);
+
+	while (stack->start != NULL) { // while empty stack
+		enqueue(que, pop(stack));
 	}
 	return que;
 

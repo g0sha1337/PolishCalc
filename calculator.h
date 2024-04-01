@@ -1,4 +1,4 @@
 #pragma once
-Queue* ConverterToPolishs(Token* tokens);
+Queue* ConvertToPolishs(Token* tokens, int size);
 
 
