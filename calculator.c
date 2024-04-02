@@ -25,6 +25,7 @@ int PriorityDefiner(Token token) { //def
 	return 0; // case indefined
 }
 
+
 //void ClearToken(Token* token) {
 //	token->data = '\0';
 //	token->type = NONE;
@@ -33,7 +34,6 @@ int PriorityDefiner(Token token) { //def
 //}
 
 Queue* ConvertToPolishs(Token* tokens, int size) { //MANY BAGS!!! FIXXX THEM TOMORROW
-
 
 	int i = 0;
 	Stack* stack = NewStack();
@@ -58,7 +58,7 @@ Queue* ConvertToPolishs(Token* tokens, int size) { //MANY BAGS!!! FIXXX THEM TOM
 			pop(stack); // remove (
 		}
 		else if (tokens[i].type == OPERAND) {
-			while (!isEmptyStack(stack) && peek(stack).type != END) { // Проверяем, что стек не пустой и на его вершине не END
+			while (!isEmptyStack(stack) && peek(stack).type != END) { // ѕровер¤ем, что стек не пустой и на его вершине не END
 				if (PriorityDefiner(tokens[i]) <= PriorityDefiner(peek(stack))) {
 					enqueue(que, pop(stack));
 				}
@@ -87,40 +87,70 @@ Token OperatorCalculation(Token val1, Token val2, Token oper) {
 	Token token;
 	ClearToken(&token);
 	token.type = VALUE;
+
 	switch (oper.data) {
-		case '+': {
-			token.value = val1.value + val1.value;
-			return token;
-		}case '-': {
-			token.value = val1.value - val1.value;
-			return token;
-		}case '*': {
-			token.value = val1.value * val1.value;
+	case '+':
+		token.value = val1.value + val2.value;
+		return token;
+	case '-':
+		token.value = val1.value - val2.value;
+		return token;
+	case '*':
+		token.value = val1.value * val2.value;
+		return token;
+	case '/':
+		if (val2.value != 0) {  // It is impossible to divide by zero, otherwise an error     Делить на ноль нельзя, иначе ошибка
+			token.value = val1.value / val2.value;
 			return token;
 		}
-		case '/': {
-			token.value = val1.value / val1.value;
+		else {
+			token.type = ERROR;
 			return token;
 		}
 	}
+	
 	token.type = ERROR;
 	return token;
-
 }
 
-double calculate(Queue* que) {
 
+double calculate(Queue* que) {
 	Stack* stack = NewStack();
 
-	while (peek(stack).type != END) {
-
+	while (peek(que).type != END) {
 		Token token;
 		ClearToken(&token);
 		token = dequeue(que);
 
-		// do later
+		if (token.type == VALUE) {
+			push(stack, token); // If the token is a number, put it on the stack      Если токен - число, поместите его в стек
+		}
+		else if (token.type == OPERAND) {
+			// If the token is an operator, extract the top two numbers from the stack     Если токен - оператор, извлеките два верхних числа из стека
+			Token operand2 = pop(stack);
+			Token operand1 = pop(stack);
 
+			Token resultToken = OperatorCalculation(operand1, operand2, token);
+
+			// We throw the result on the stack   Кидаем результат в стек
+			if (resultToken.type != ERROR) {
+				push(stack, resultToken);
+			}
+			else {
+
+				printf("Error: Division by zero\n");
+				exit(EXIT_FAILURE);
+			}
+		}
 	}
 
+	// After the end of the loop, only one number should remain in the stack - the result of calculations   После завершения цикла в стеке должно остаться только одно число - результат вычислений
+	Token finalResultToken = pop(stack);
+	double finalResult = finalResultToken.value;
 
+	// Freeing up the memory spent on the stack     Освобождаем память, затраченную на стек
+	free(stack);
+
+	return finalResult;
 }
+

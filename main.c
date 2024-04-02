@@ -12,14 +12,14 @@
 
 char WhitelistChar[] = " 1234567890+-^*!/()abcdefghijklmnopqrstuvwxyz.,";
 
-int contain(char x, char* str) {
+int contain(char x, char* str) { // WhitelistChar cheeeck
     for (int i = 0; i < strlen(str); i++) {
         if (str[i] == x) return 1;
     }
     return 0;
 }
 
-int CheckBrackets(Token* tokens, int length) {
+int CheckBrackets(Token* tokens, int length) { //чек скобок
     Stack* stack = NewStack();
     for (int i = 0; i < length; i++) {
         if (tokens[i].type == BRACKET_OPEN) {
@@ -38,14 +38,14 @@ int CheckBrackets(Token* tokens, int length) {
         }
     }
     if (isEmptyStack(stack)) {
-        return 1; //  brackets are balanced
+        return 1; //  со скобками всё ок
     }
     else {
-        return 0; // Unpaired opening brackets remain
+        return 0; // со скобками всё НЕ ок
     }
 }
 
-int CheckInput(char* str) {
+int CheckInput(char* str) { // чек введёных символов, что они все норм
     for (int i = 0; i < strlen(str); i++) {
         if (!(contain(str[i], WhitelistChar))) return 0;
     }
@@ -182,11 +182,11 @@ void PrintToken(Token token) {
     }
 }
 int main() {
-    
+
     char InputLine[100] = { '\0' };
     printf("........................................................................................................................\n\nEnter equasion to count: ");
     scanf("%99[^\n]", InputLine);
-    
+
     ClearLine(InputLine);
     int length = strlen(InputLine);
     length++;
@@ -194,7 +194,7 @@ int main() {
     // printTokens(tokens, length);
     //Token* tokens = (Token*)malloc(length * sizeof(Token)); //the number of tokens cannot exceed the length of the string
     //check correct expression
-    
+
     /*if (!(CheckBrackets(tokens, length))) printf("\nCheckBrackets FAIL\n");
     if (!(CheckInput(InputLine))) printf("\nCheckInput FAIL\n");
     if (!(CheckTokenPositions(tokens))) printf("\nCheckTokenPositions FAIL\n");*/
@@ -202,17 +202,16 @@ int main() {
     if (CheckBrackets(tokens, length) && CheckInput(InputLine) && CheckTokenPositions(tokens)) { //works only if input was corrects
         printf("\nEverything OK\n");
 
-        Queue* PolishTokens = ConvertToPolishs(tokens,length);
-        
-        
-        printf("\nPOLISH TOKENS: ");
-        for (int i = 0; i < length-1; i++) {    
-            /*printf("\ntoken-%d: ", i);*/
-            PrintToken(dequeue(PolishTokens));
+        Queue* PolishTokens = ConvertToPolishs(tokens, length);
 
-        }
-            
-        
+
+        //printf("\nPOLISH TOKENS: ");
+        //for (int i = 0; i < length - 1; i++) {
+        //    /*printf("\ntoken-%d: ", i);*/
+        //    PrintToken(dequeue(PolishTokens)); // если включишь, то всё сломается т.к. стек пустой - if you turn it on, everything will break because the stack is empty
+        //}
+
+        printf("%lf", calculate(PolishTokens));
         printf("\n\n");
         free(PolishTokens);
     }
@@ -221,11 +220,9 @@ int main() {
 
     }
     //printTokens(tokens, length);
-    
+
+
     free(tokens);
-    
+
     return 0;
 }
-
-
-
