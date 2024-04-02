@@ -121,19 +121,19 @@ void PrintToken(Token token) {
 
     switch (token.type) {
     case NONE:
-        printf("Type: NONE");
+        printf(" :NONE:");
         break;
     case VALUE:
-        printf("Type: VALUE, Value: %f", token.value);
+        printf("%.0f ", token.value);
         break;
     case VARIABLE:
-        printf("Type: VARIABLE, Data: %c", token.data);
+        printf("%c ", token.data);
         break;
     case OPERAND:
-        printf("Type: OPERAND, Data: %c", token.data);
+        printf("%c ", token.data);
         break;
     case END:
-        printf("Type: END");
+        printf(":END:");
         break;
     case FUNCTION:
         printf("Type: FUNCTION, Data: %c, Function type: ", token.data);
@@ -191,7 +191,7 @@ int main() {
     int length = strlen(InputLine);
     length++;
     Token* tokens = tokenizer(InputLine, length);
-    printTokens(tokens, length);
+    // printTokens(tokens, length);
     //Token* tokens = (Token*)malloc(length * sizeof(Token)); //the number of tokens cannot exceed the length of the string
     //check correct expression
     
@@ -205,15 +205,15 @@ int main() {
         Queue* PolishTokens = ConvertToPolishs(tokens,length);
         
         
-        printf("\nPOLISH TOKENS:\n");
-        for (int i = 0; i < length; i++) {
-            printf("\ntoken-%d: ", i);
+        printf("\nPOLISH TOKENS: ");
+        for (int i = 0; i < length-1; i++) {
+            /*printf("\ntoken-%d: ", i);*/
             PrintToken(dequeue(PolishTokens));
 
         }
             
         
-        
+        printf("\n\n");
         free(PolishTokens);
     }
     else {

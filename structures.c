@@ -77,7 +77,7 @@ void enqueue(Queue* q, Token value) {
 
 Token dequeue(Queue* q) {
     if (isEmptyQueue(q)) {
-        perror("Queue is empty, cannot dequeue!n");
+        printf("\n\nQueue is empty, cannot dequeue!n");
         exit(EXIT_FAILURE);
     }
     qNode* temp = q->front;
