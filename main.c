@@ -9,8 +9,8 @@
 #include "structures.h"
 #include "tokenizer.h"
 #include "calculator.h"
-char WhitelistChar[] = " 1234567890+-^*!/()abcdefghijklmnopqrstuvwxyz.,";
 
+char WhitelistChar[] = " 1234567890+-^*!/()abcdefghijklmnopqrstuvwxyz.,";
 
 int contain(char x, char* str) {
     for (int i = 0; i < strlen(str); i++) {
@@ -18,8 +18,6 @@ int contain(char x, char* str) {
     }
     return 0;
 }
-
-
 
 int CheckBrackets(Token* tokens, int length) {
     Stack* stack = NewStack();
@@ -46,11 +44,6 @@ int CheckBrackets(Token* tokens, int length) {
         return 0; // Unpaired opening brackets remain
     }
 }
-
-
-
-
-
 
 int CheckInput(char* str) {
     for (int i = 0; i < strlen(str); i++) {
@@ -205,6 +198,7 @@ int main() {
     /*if (!(CheckBrackets(tokens, length))) printf("\nCheckBrackets FAIL\n");
     if (!(CheckInput(InputLine))) printf("\nCheckInput FAIL\n");
     if (!(CheckTokenPositions(tokens))) printf("\nCheckTokenPositions FAIL\n");*/
+
     if (CheckBrackets(tokens, length) && CheckInput(InputLine) && CheckTokenPositions(tokens)) { //works only if input was corrects
         printf("\nEverything OK\n");
 

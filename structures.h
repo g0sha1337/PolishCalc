@@ -11,8 +11,8 @@ typedef struct {
 		BRACKET_CLOSE,
 		ERROR, 
 		END
-		
 	} type;
+
 	enum Func {
 		__sin,
 		__cos,
@@ -25,29 +25,35 @@ typedef struct {
 		__sqrt,
 		__NONE,
 	} func;
+
 	char data;
 	
 	double value;
 
 	
 } Token;
+
 typedef struct {
 	Token token;
 	void* next;
 	void* prev;
 } Node;
+
 typedef struct {
     Node* start;
 } Stack;
-//queueueueu
+
+//queue
 typedef struct qNode {
 	Token value;
 	struct qNode* next; //link to next element queue
 } qNode;
+
 typedef struct {
 	qNode* front; // pered
 	qNode* rear; // zad
 } Queue;
+
 Token peek(const Stack* s);
 Token pop(Stack* s);
 void initStack(Stack* stack);

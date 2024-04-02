@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "structures.h"
 #include "tokenizer.h"
+
 void ClearLine(char* equasion) {
     char trimmed[1000] = { '\0' };
     int trimIndex = 0;
@@ -15,7 +16,6 @@ void ClearLine(char* equasion) {
         if (equasion[i] >= 'A' && equasion[i] <= 'Z') equasion[i] = equasion[i] + 32;
     }
 }
-
 
 double convertStringToDouble(const char* str) {
     return strtod(str, NULL);
@@ -32,6 +32,7 @@ void ClearToken(Token* token) {
     token->value = 0.00;
     token->func = NONE;
 }
+
 Token* tokenizer(char* str, /*Token* array*/int size) {
     Token* array = (Token*)malloc(size * sizeof(Token));
     if (array == NULL) {
@@ -43,7 +44,6 @@ Token* tokenizer(char* str, /*Token* array*/int size) {
     char MathFunctins[32][16] = {
         "sin", "cos", "tg", "ctg", "arcsin", "arccos","arctg","arcctg","sqrt"
     };
-    //Token array[1024] = { "\0" }; //array with our tokens (cringe)
     int ArrayPositionRN = 0;
     int counter = 0;
     int ParsingNumberRN = 0;
@@ -186,6 +186,7 @@ Token* tokenizer(char* str, /*Token* array*/int size) {
     }
     return array;
 }
+
 int CheckTokenPositions(Token* tokens) { // avoid 2++ and some other incorrect input
     // sin ( 2 * ( 2 - 1 ) )
     int i = 0;

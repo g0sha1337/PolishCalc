@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-
 #include "structures.h"
 #include "calculator.h"
 
@@ -25,6 +23,7 @@ int PriorityDefiner(Token token) { //def
 
 	return 0; // case indefined
 }
+
 void ClearSomeToken(Token* token) {
 	token->data = '\0';
 	token->type = NONE;
@@ -33,7 +32,6 @@ void ClearSomeToken(Token* token) {
 }
 
 Queue* ConvertToPolishs(Token* tokens, int size) { //MANY BAGS!!! FIXXX THEM TOMORROW
-
 
 
 	int i = 0;
@@ -59,9 +57,12 @@ Queue* ConvertToPolishs(Token* tokens, int size) { //MANY BAGS!!! FIXXX THEM TOM
 			pop(stack); // remove (
 		}
 		else if (tokens[i].type == OPERAND) {
-			while (peek(stack).type!= END) { // ERROR HERE, CHECK LATER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			while (!isEmptyStack(stack) && peek(stack).type != END) { // ѕровер€ем, что стек не пустой и на его вершине не END
 				if (PriorityDefiner(tokens[i]) <= PriorityDefiner(peek(stack))) {
 					enqueue(que, pop(stack));
+				}
+				else {
+					break;
 				}
 			}
 			push(stack, tokens[i]);
