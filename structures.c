@@ -93,3 +93,9 @@ Token dequeue(Queue* q) {
 
 
 
+void ClearToken(Token* token) {
+    token->data = '\0';
+    token->type = NONE;
+    token->value = 0.00;
+    token->func = NONE;
+}

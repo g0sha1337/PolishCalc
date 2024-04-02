@@ -26,12 +26,7 @@ void ClearCharArray(char* arr) {
         arr[i] = '\0';
     }
 }
-void ClearToken(Token* token) {
-    token->data = '\0';
-    token->type = NONE;
-    token->value = 0.00;
-    token->func = NONE;
-}
+
 
 Token* tokenizer(char* str, /*Token* array*/int size) {
     Token* array = (Token*)malloc(size * sizeof(Token));

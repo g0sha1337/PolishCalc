@@ -136,37 +136,37 @@ void PrintToken(Token token) {
         printf(":END:");
         break;
     case FUNCTION:
-        printf("Type: FUNCTION, Data: %c, Function type: ", token.data);
+        //printf("Type: FUNCTION, Data: %c, Function type: ", token.data);
         switch (token.func) {
         case __sin:
-            printf("sin");
+            printf("sin ");
             break;
         case __cos:
-            printf("cos");
+            printf("cos ");
             break;
         case __tg:
-            printf("tg");
+            printf("tg ");
             break;
         case __ctg:
-            printf("ctg");
+            printf("ctg ");
             break;
         case __arcsin:
-            printf("arcsin");
+            printf("arcsin ");
             break;
         case __arccos:
-            printf("arccos");
+            printf("arccos ");
             break;
         case __arctg:
-            printf("arctg");
+            printf("arctg ");
             break;
         case __arcctg:
-            printf("arcctg");
+            printf("arcctg ");
             break;
         case __sqrt:
-            printf("sqrt");
+            printf("sqrt ");
             break;
         case __NONE:
-            printf("none");
+            printf("none ");
             break;
         }
         break;
@@ -206,7 +206,7 @@ int main() {
         
         
         printf("\nPOLISH TOKENS: ");
-        for (int i = 0; i < length-1; i++) {
+        for (int i = 0; i < length-1; i++) {    
             /*printf("\ntoken-%d: ", i);*/
             PrintToken(dequeue(PolishTokens));
 
@@ -226,3 +226,6 @@ int main() {
     
     return 0;
 }
+
+
+

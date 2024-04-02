@@ -64,4 +64,4 @@ Queue* NewQueue();
 int isEmptyQueue(const Queue* q);
 void enqueue(Queue* q, Token value);
 Token dequeue(Queue* q);
-
+void ClearToken(Token* token);

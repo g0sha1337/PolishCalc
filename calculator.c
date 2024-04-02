@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "structures.h"
 #include "calculator.h"
 
@@ -24,12 +25,12 @@ int PriorityDefiner(Token token) { //def
 	return 0; // case indefined
 }
 
-void ClearSomeToken(Token* token) {
-	token->data = '\0';
-	token->type = NONE;
-	token->value = 0.00;
-	token->func = NONE;
-}
+//void ClearToken(Token* token) {
+//	token->data = '\0';
+//	token->type = NONE;
+//	token->value = 0.00;
+//	token->func = NONE;
+//}
 
 Queue* ConvertToPolishs(Token* tokens, int size) { //MANY BAGS!!! FIXXX THEM TOMORROW
 
@@ -67,6 +68,9 @@ Queue* ConvertToPolishs(Token* tokens, int size) { //MANY BAGS!!! FIXXX THEM TOM
 			}
 			push(stack, tokens[i]);
 		}
+		else if (tokens[i].type == FUNCTION) {
+			push(stack, tokens[i]);
+		}
 
 		i++;
 	}
@@ -74,6 +78,49 @@ Queue* ConvertToPolishs(Token* tokens, int size) { //MANY BAGS!!! FIXXX THEM TOM
 	while (stack->start != NULL) { // while empty stack
 		enqueue(que, pop(stack));
 	}
+	free(stack); // we are good boys 
 	return que;
+
+}
+
+Token OperatorCalculation(Token val1, Token val2, Token oper) {
+	Token token;
+	ClearToken(&token);
+	token.type = VALUE;
+	switch (oper.data) {
+		case '+': {
+			token.value = val1.value + val1.value;
+			return token;
+		}case '-': {
+			token.value = val1.value - val1.value;
+			return token;
+		}case '*': {
+			token.value = val1.value * val1.value;
+			return token;
+		}
+		case '/': {
+			token.value = val1.value / val1.value;
+			return token;
+		}
+	}
+	token.type = ERROR;
+	return token;
+
+}
+
+double calculate(Queue* que) {
+
+	Stack* stack = NewStack();
+
+	while (peek(stack).type != END) {
+
+		Token token;
+		ClearToken(&token);
+		token = dequeue(que);
+
+		// do later
+
+	}
+
 
 }
