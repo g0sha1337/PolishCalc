@@ -33,7 +33,7 @@ int PriorityDefiner(Token token) { //def
 //	token->func = NONE;
 //}
 
-Queue* ConvertToPolishs(Token* tokens, int size) { //MANY BAGS!!! FIXXX THEM TOMORROW
+Queue* ConvertToPolishs(Token* tokens, int size) { 
 
 	int i = 0;
 	Stack* stack = NewStack();
@@ -50,6 +50,7 @@ Queue* ConvertToPolishs(Token* tokens, int size) { //MANY BAGS!!! FIXXX THEM TOM
 		}
 		else if (tokens[i].type == BRACKET_OPEN) {
 			push(stack, tokens[i]);
+			
 		}
 		else if (tokens[i].type == BRACKET_CLOSE) {
 			while (!(isEmptyStack(stack)) && peek(stack).type != BRACKET_OPEN) {
@@ -83,11 +84,43 @@ Queue* ConvertToPolishs(Token* tokens, int size) { //MANY BAGS!!! FIXXX THEM TOM
 
 }
 
+Token FunctionCalculate(Token func, Token val) {
+	Token token;
+	ClearToken(&token);
+	if (func.type == FUNCTION) {
+		token.type == VALUE;
+		switch (func.func) {
+		case __sin:
+			token.value = sin(val.value);
+			return token;
+
+		case __cos:
+			token.value = cos(val.value);
+			return token;
+		case __tg:
+			token.value = tan(val.value);
+			return token;
+		case __arctg:
+			token.value = atan(val.value);
+			return token;
+		case __arcctg:
+			token.value = (3.14159265/2) - atan(val.value); // there isnt arcctg in math.h :(
+			return token;
+		case __arcsin:
+			token.value = asin(val.value);
+			return token;
+		case __arccos:
+			token.value = acos(val.value);
+			return token;
+
+		} 
+	}
+	else return token;
+}
 Token OperatorCalculation(Token val1, Token val2, Token oper) {
 	Token token;
 	ClearToken(&token);
 	token.type = VALUE;
-
 	switch (oper.data) {
 	case '+':
 		token.value = val1.value + val2.value;
@@ -135,6 +168,21 @@ double calculate(Queue* que) {
 			// We throw the result on the stack   Кидаем результат в стек
 			if (resultToken.type != ERROR) {
 				push(stack, resultToken);
+			}
+			else {
+
+				printf("Error: Division by zero\n");
+				exit(EXIT_FAILURE);
+			}
+		}
+		else if (token.type == FUNCTION) {
+			Token ValToken = pop(stack);
+			Token res;
+			ClearToken(&res);
+			res = FunctionCalculate(token, ValToken);
+			
+			if (res.type != ERROR) {
+				push(stack, res);
 			}
 			else {
 

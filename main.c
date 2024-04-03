@@ -124,7 +124,7 @@ void PrintToken(Token token) {
         printf(" :NONE:");
         break;
     case VALUE:
-        printf("%.0f ", token.value);
+        printf("%.2f ", token.value);
         break;
     case VARIABLE:
         printf("%c ", token.data);
@@ -204,14 +204,14 @@ int main() {
 
         Queue* PolishTokens = ConvertToPolishs(tokens, length);
 
-
-        //printf("\nPOLISH TOKENS: ");
-        //for (int i = 0; i < length - 1; i++) {
-        //    /*printf("\ntoken-%d: ", i);*/
-        //    PrintToken(dequeue(PolishTokens)); // если включишь, то всё сломается т.к. стек пустой - if you turn it on, everything will break because the stack is empty
-        //}
-
-        printf("%lf", calculate(PolishTokens));
+        Queue* PrintPolishTokens = ConvertToPolishs(tokens, length);
+        printf("\nPOLISH TOKENS: ");
+        for (int i = 0; i < length - 1; i++) {
+            /*printf("\ntoken-%d: ", i);*/
+            PrintToken(dequeue(PrintPolishTokens)); // если включишь, то всё сломается т.к. стек пустой - if you turn it on, everything will break because the stack is empty
+        }
+        
+        printf("\nResult: %f", calculate(PolishTokens));
         printf("\n\n");
         free(PolishTokens);
     }
