@@ -10,6 +10,9 @@
 #include "tokenizer.h"
 #include "calculator.h"
 
+void chooseMenu();
+int printMainMenu();
+
 char WhitelistChar[] = " 1234567890+-^*!/()abcdefghijklmnopqrstuvwxyz.,";
 
 int contain(char x, char* str) { // WhitelistChar cheeeck
@@ -117,6 +120,7 @@ void printTokens(Token* tokens, size_t length) {
         }
     }
 }
+
 void PrintToken(Token token) {
 
     switch (token.type) {
@@ -181,7 +185,8 @@ void PrintToken(Token token) {
         break;
     }
 }
-int main() {
+
+int poland() {
 
     char InputLine[100] = { '\0' };
     printf("........................................................................................................................\n\nEnter equasion to count: ");
@@ -229,6 +234,49 @@ int main() {
 
 
     free(tokens);
+    _getch();
+    return 0;
+}
+
+int main() {
+
+    while (1)
+        chooseMenu();
 
     return 0;
+}
+
+void chooseMenu()
+{
+    switch (printMainMenu())
+    {
+    case 49:
+    {
+        system("cls");
+        poland();
+        system("cls");
+        break;
+    }
+    case 50:
+    {
+        printf("\nSee you next time!\n");
+        exit(0);
+    }
+    default:
+    {
+        system("cls");
+        printf("Error: An invalid character was entered\n");
+        _getch();
+        system("cls");
+        break;
+    }
+    }
+}
+
+int printMainMenu() {
+    printf("........................................................................................................................");
+    printf("\n\nBeaver calculator\n\n");
+    printf("(1). Enter an expression\n");
+    printf("(2). Close the program\n");
+    _getch();
 }
