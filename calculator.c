@@ -132,7 +132,23 @@ Token FunctionCalculate(Token func, Token val) {
 	return token;
 }
 
+//Token FucktorialCalculation(Token val) {
+//	Token result;
+//	ClearToken(&result);
+//	if (val.value == 0) {
+//		result.type = VALUE;
+//		result.value = 1;
+//		return result;
+//	}
+//	else {
+//
+//	}
+//}
 
+int factorial(int n) {
+	if (n == 0) return 1;
+	else return n * factorial(n - 1);
+}
 Token OperatorCalculation(Token val1, Token val2, Token oper) {
 	Token token;
 	ClearToken(&token);
@@ -178,11 +194,25 @@ double calculate(Queue* que) {
 		}
 		else if (token.type == OPERAND) {
 			// If the token is an operator, extract the top two numbers from the stack     Если токен - оператор, извлеките два верхних числа из стека
-			Token operand2 = pop(stack);
-			Token operand1 = pop(stack);
+			Token resultToken;
+			resultToken.type = VALUE;
+			if (token.data == '!') {
+				Token value = pop(stack);
+				if (floor(value.value) == value.value && value.value >=0) { // fucktorial works only with integer
+					resultToken.value = (double)factorial((int)value.value);
+				}
+				else {
+					printf("Trying take factorial from bad number!");
+				}
+			}
+			else {
+				Token operand2 = pop(stack);
+				Token operand1 = pop(stack);
 
-			Token resultToken = OperatorCalculation(operand1, operand2, token);
+				resultToken = OperatorCalculation(operand1, operand2, token);
 
+			}
+			
 			// We throw the result on the stack   Кидаем результат в стек
 			if (resultToken.type != ERROR) {
 				push(stack, resultToken);

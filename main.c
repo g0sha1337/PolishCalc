@@ -215,6 +215,7 @@ int main() {
             }
             else break;
         }
+        printf("\n");
         
         printf("\n\nResult: %f", calculate(PolishTokens));
         printf("\n\n");
