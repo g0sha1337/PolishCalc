@@ -18,6 +18,8 @@ int PriorityDefiner(Token token) { //def
 			else if (token.data == '!' || token.data == '^') {
 				return 3;
 			}
+		case FUNCTION: // Мы добавили новый кейс для функций
+			return 4;	
 			
 	}
 
@@ -57,6 +59,9 @@ Queue* ConvertToPolishs(Token* tokens, int size) {
 				enqueue(que, pop(stack));
 			}
 			pop(stack); // remove (
+		}
+		if (!isEmptyStack(stack) && peek(stack).type == FUNCTION) {
+			enqueue(que, pop(stack)); // Add the function to the queue after the last argument inside the brackets.
 		}
 		else if (tokens[i].type == OPERAND) {
 			while (!isEmptyStack(stack) && peek(stack).type != END) { // ѕровер¤ем, что стек не пустой и на его вершине не END
@@ -112,7 +117,9 @@ Token FunctionCalculate(Token func, Token val) {
 		case __arccos:
 			token.value = acos(val.value);
 			return token;
-
+		case __sqrt:
+			token.value = sqrt(val.value);
+			return token;
 		} 
 	}
 	else return token;
@@ -186,8 +193,8 @@ double calculate(Queue* que) {
 			}
 			else {
 
-				printf("Error: Division by zero\n");
-				exit(EXIT_FAILURE);
+				printf("Error: Division by zero or something else illigal\n");
+				exit(-1);
 			}
 		}
 	}

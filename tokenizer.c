@@ -1,5 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "structures.h"
 #include "tokenizer.h"
 
@@ -39,6 +41,7 @@ Token* tokenizer(char* str, /*Token* array*/int size) {
     char MathFunctins[32][16] = {
         "sin", "cos", "tg", "ctg", "arcsin", "arccos","arctg","arcctg","sqrt"
     };
+    char _pi[] = "pi";
     int ArrayPositionRN = 0;
     int counter = 0;
     int ParsingNumberRN = 0;
@@ -52,17 +55,32 @@ Token* tokenizer(char* str, /*Token* array*/int size) {
                 continue;
             }
             else {
-                for (int i = 0; i < 10; i++) {
-                    if (strcmp(TempCharLine, MathFunctins[i]) == 0) {
-                        temp.type = FUNCTION;
-                        temp.func = i;
-                        array[ArrayPositionRN] = temp;
-                        ArrayPositionRN++;
-                        ClearToken(&temp);
-                        ClearCharArray(TempCharLine);
-                        break;
-                    }
+                if (strcmp(_pi, TempCharLine)==0) {
+                    temp.type = VALUE;
+                    temp.value = 3.14159265;
+                    array[ArrayPositionRN] = temp;
+                    ArrayPositionRN++;
+                    ClearToken(&temp);
+                    ClearCharArray(TempCharLine);
+
                 }
+                else {
+                    for (int i = 0; i < 10; i++) {
+                        if (strcmp(TempCharLine, MathFunctins[i]) == 0) {
+                            temp.type = FUNCTION;
+                            temp.func = i;
+                            array[ArrayPositionRN] = temp;
+                            ArrayPositionRN++;
+                            ClearToken(&temp);
+                            ClearCharArray(TempCharLine);
+                            break;
+                        }
+                    }
+
+                }
+                
+
+                
                 if (TempCharLine[0] != '\0') { // if user entired some huynya
                     temp.type = ERROR;
                     temp.func = 8;

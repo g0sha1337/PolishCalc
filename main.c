@@ -207,11 +207,16 @@ int main() {
         Queue* PrintPolishTokens = ConvertToPolishs(tokens, length);
         printf("\nPOLISH TOKENS: ");
         for (int i = 0; i < length - 1; i++) {
-            /*printf("\ntoken-%d: ", i);*/
-            PrintToken(dequeue(PrintPolishTokens)); // если включишь, то всё сломается т.к. стек пустой - if you turn it on, everything will break because the stack is empty
+            Token temp;
+            ClearToken(&temp);
+            temp = dequeue(PrintPolishTokens);
+            if (temp.type != NONE) {
+                PrintToken(temp); // 
+            }
+            else break;
         }
         
-        printf("\nResult: %f", calculate(PolishTokens));
+        printf("\n\nResult: %f", calculate(PolishTokens));
         printf("\n\n");
         free(PolishTokens);
     }
