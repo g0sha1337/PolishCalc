@@ -31,7 +31,7 @@ void ClearCharArray(char* arr) {
 
 
 Token* tokenizer(char* str, /*Token* array*/int size) {
-    Token* array = (Token*)malloc(size * sizeof(Token));
+    Token* array = (Token*)malloc(size*2 * sizeof(Token));
     if (array == NULL) {
         printf("\nKURWA HEAP KURWA!!1!\n");
         exit(EXIT_FAILURE);
@@ -161,11 +161,38 @@ Token* tokenizer(char* str, /*Token* array*/int size) {
                 ClearToken(&temp);
             }
             else if (str[i] == '-') {
-                temp.type = OPERAND;
-                temp.data = '-';
-                array[ArrayPositionRN] = temp;
-                ArrayPositionRN++;
-                ClearToken(&temp);
+                if (i == 0) {
+                    temp.type = VALUE;
+                    temp.value = 0;
+                    array[ArrayPositionRN] = temp;
+                    ArrayPositionRN++;
+                    ClearToken(&temp);
+                    temp.type = OPERAND;
+                    temp.data = '-';
+                    array[ArrayPositionRN] = temp;
+                    ArrayPositionRN++;
+                    ClearToken(&temp);
+
+                }
+                else if (isdigit(str[i - 1]) == 0 && str[i - 1] != ')') {
+                    temp.type = VALUE;
+                    temp.value = 0;
+                    array[ArrayPositionRN] = temp;
+                    ArrayPositionRN++;
+                    ClearToken(&temp);
+                    temp.type = OPERAND;
+                    temp.data = '-';
+                    array[ArrayPositionRN] = temp;
+                    ArrayPositionRN++;
+                    ClearToken(&temp);
+                } else {
+                    temp.type = OPERAND;
+                    temp.data = '-';
+                    array[ArrayPositionRN] = temp;
+                    ArrayPositionRN++;
+                    ClearToken(&temp);
+                }
+                
             }
             else if (str[i] == '*') {
                 temp.type = OPERAND;

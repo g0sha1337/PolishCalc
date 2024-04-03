@@ -191,7 +191,7 @@ int main() {
     int length = strlen(InputLine);
     length++;
     Token* tokens = tokenizer(InputLine, length);
-    // printTokens(tokens, length);
+    printTokens(tokens, length);
     //Token* tokens = (Token*)malloc(length * sizeof(Token)); //the number of tokens cannot exceed the length of the string
     //check correct expression
 
