@@ -23,6 +23,8 @@ typedef struct {
 		__arctg,
 		__arcctg,
 		__sqrt,
+		__factorial,
+		__pow,
 		__NONE,
 	} func;
 

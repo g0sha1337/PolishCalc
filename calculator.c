@@ -27,14 +27,6 @@ int PriorityDefiner(Token token) { //def
 	return 0; // case indefined
 }
 
-
-//void ClearToken(Token* token) {
-//	token->data = '\0';
-//	token->type = NONE;
-//	token->value = 0.00;
-//	token->func = NONE;
-//}
-
 Queue* ConvertToPolishs(Token* tokens, int size) { 
 
 	int i = 0;
@@ -98,7 +90,6 @@ Token FunctionCalculate(Token func, Token val) {
 		case __sin:
 			token.value = sin(val.value);
 			return token;
-
 		case __cos:
 			token.value = cos(val.value);
 			return token;
@@ -120,10 +111,28 @@ Token FunctionCalculate(Token func, Token val) {
 		case __sqrt:
 			token.value = sqrt(val.value);
 			return token;
-		} 
+		case __factorial: //add
+			if (val.value < 0 || val.value != (int)val.value) { // Если факториал отрицательный - error
+				token.type = ERROR;
+				return token;
+			}
+			else {
+				double result = 1.0;
+				for (int i = 2; i <= val.value; ++i) {
+					result *= i;
+				}
+				token.value = result;
+				return token;
+			}
+		case __pow: //add
+			token.value = pow(val.value, val.data);
+			return token;
+		}
 	}
-	else return token;
+	return token;
 }
+
+
 Token OperatorCalculation(Token val1, Token val2, Token oper) {
 	Token token;
 	ClearToken(&token);
@@ -147,8 +156,10 @@ Token OperatorCalculation(Token val1, Token val2, Token oper) {
 			token.type = ERROR;
 			return token;
 		}
+	case '^': //add
+		token.value = pow(val1.value, val2.value);
+		return token;
 	}
-	
 	token.type = ERROR;
 	return token;
 }
@@ -192,7 +203,6 @@ double calculate(Queue* que) {
 				push(stack, res);
 			}
 			else {
-
 				printf("Error: Division by zero or something else illigal\n");
 				exit(-1);
 			}
