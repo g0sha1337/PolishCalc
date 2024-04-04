@@ -183,7 +183,8 @@ void PrintToken(Token token) {
 }
 int main() {
 
-    char InputLine[100] = { '\0' };
+    char InputLine[256] = { '\0' };
+    
     printf("........................................................................................................................\n\nEnter equasion to count: ");
     scanf("%99[^\n]", InputLine);
 
@@ -191,7 +192,15 @@ int main() {
     int length = strlen(InputLine);
     length++;
     Token* tokens = tokenizer(InputLine, length);
-    printTokens(tokens, length);
+    Token* TokensToCheckVariables = tokenizer(InputLine, length);
+
+    //printTokens(tokens, length);
+
+
+    printf("\n\n\n");
+    if (VariableFinder(TokensToCheckVariables)) printf("variables +");
+    else printf("variables -");
+    free(TokensToCheckVariables);
     //Token* tokens = (Token*)malloc(length * sizeof(Token)); //the number of tokens cannot exceed the length of the string
     //check correct expression
 
@@ -200,26 +209,50 @@ int main() {
     if (!(CheckTokenPositions(tokens))) printf("\nCheckTokenPositions FAIL\n");*/
 
     if (CheckBrackets(tokens, length) && CheckInput(InputLine) && CheckTokenPositions(tokens)) { //works only if input was corrects
+
         printf("\nEverything OK\n");
 
-        Queue* PolishTokens = ConvertToPolishs(tokens, length);
 
-        Queue* PrintPolishTokens = ConvertToPolishs(tokens, length);
-        printf("\nPOLISH TOKENS: ");
-        for (int i = 0; i < length - 1; i++) {
-            Token temp;
-            ClearToken(&temp);
-            temp = dequeue(PrintPolishTokens);
-            if (temp.type != NONE) {
-                PrintToken(temp); // 
-            }
-            else break;
-        }
-        printf("\n");
         
-        printf("\n\nResult: %f", calculate(PolishTokens));
-        printf("\n\n");
-        free(PolishTokens);
+
+        if (VariableFinder(tokens)) {
+            DefineNewVariable(tokens);
+            Queue* PolishTokens = ConvertToPolishs(tokens, length);
+            printf("\n\nResult: %f", calculate(PolishTokens));
+        }
+        else {
+
+            Queue* PolishTokens = ConvertToPolishs(tokens, length);
+
+
+            Queue* PrintPolishTokens = ConvertToPolishs(tokens, length);
+            printf("\nPOLISH TOKENS: ");
+            for (int i = 0; i < length - 1; i++) {
+                Token temp;
+                ClearToken(&temp);
+                temp = dequeue(PrintPolishTokens);
+                if (temp.type != NONE) {
+                    PrintToken(temp); // 
+                }
+                else break;
+            }
+
+            printf("\n\nResult: %f", calculate(PolishTokens));
+            printf("\n\n");
+            free(PolishTokens);
+        }
+
+
+        
+
+        
+
+       
+        
+        
+        
+        
+        
     }
     else {
         printf("Incorrect equasion");

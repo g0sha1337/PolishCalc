@@ -30,7 +30,7 @@ void ClearCharArray(char* arr) {
 }
 
 
-Token* tokenizer(char* str, /*Token* array*/int size) {
+Token* tokenizer(char* str, int size) {
     Token* array = (Token*)malloc(size*2 * sizeof(Token));
     if (array == NULL) {
         printf("\nKURWA HEAP KURWA!!1!\n");

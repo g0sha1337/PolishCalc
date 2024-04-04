@@ -1,8 +1,19 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "structures.h"
 #include "calculator.h"
+#include "tokenizer.h"
+
+
+
+int KnownVarsPositions[28] = { 0 };
+double KnownVars[28] = { '\0' };
+int TabsCounter = 0;
+
+
+
 
 int PriorityDefiner(Token token) { //def
 	
@@ -145,6 +156,8 @@ Token FunctionCalculate(Token func, Token val) {
 //	}
 //}
 
+
+
 int factorial(int n) {
 	if (n == 0) return 1;
 	else return n * factorial(n - 1);
@@ -249,3 +262,92 @@ double calculate(Queue* que) {
 	return finalResult;
 }
 
+int VariableFinder(Token* array) {
+	while (array->type != END) {
+		if (array->type == VARIABLE) return 1;
+
+		array++;
+	}
+	return 0;
+}
+
+int GetIndexLetter(char letter) {
+	letter = tolower(letter);
+	if (letter >= 'a' && letter <= 'z') {
+		// Возвращаем индекс от 0 до 25
+		return letter - 'a';
+	}
+	else {
+		return -1;
+	}
+}
+int IsPreviouslyKnownVariable(Token token) {
+	int index = GetIndexLetter(token.data);
+
+	if (KnownVarsPositions[index]) { //if variable was defined earlier
+		return 1;
+	}
+	return 0;
+
+}
+void DefineNewVariable(Token* array) {
+	for (int i = 0; array[i].type != END; i++) {
+		if (array[i].type == VARIABLE) {
+
+			// if info exist 'bout var earlier
+			if (IsPreviouslyKnownVariable(array[i])) {
+				array[i].type = VALUE;
+				array[i].value = KnownVars[GetIndexLetter(array[i].data)]; // grab known value to our variable and make it type = VALUE
+			}
+			else {
+				TabsCounter += 5;
+				printf("\n");
+				for (int i = 0; i < TabsCounter; i++) { //UI :3
+					printf("-");
+					}
+				char* str[256] = { '\0' };
+				printf("[%c]: ", array[i].data);
+
+
+				//getch(); // Считывает один символ без Echo на экран
+				// Очистка буфера ввода
+				int c;
+				while ((c = getchar()) != '\n' && c != EOF); // Очищаем буфер stdin, если в нём есть оставшиеся символы
+				scanf("%255[^\n]", str);
+
+
+				int length = strlen(str) + 10;
+				Token* newtokens = tokenizer(str, length);
+				//printf("new tokens from tokenizer ");
+				//printTokens(newtokens, length);
+				if (VariableFinder(newtokens)) {
+					//DefineNewVariable(newtokens);
+					printf("Adding vars to vars soon..");
+					exit(-1);
+					//bag here~!~
+				}
+				else {
+					TabsCounter -= 5;
+					Queue* PolishTokens = ConvertToPolishs(newtokens, length);
+
+					double CalculatedValue = calculate(PolishTokens);
+					//rintf("( = %.2f)", CalculatedValue);
+					KnownVars[GetIndexLetter(array[i].data)] = CalculatedValue;
+					
+					array[i].type = VALUE;
+					array[i].value = KnownVars[GetIndexLetter(array[i].data)];
+
+					
+				}
+				//printf("\n\n\n");
+				//printTokens(newtokens, length);
+
+				free(newtokens);
+				
+			}
+			
+
+		}
+	}
+	return;
+}
