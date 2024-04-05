@@ -321,10 +321,11 @@ void DefineNewVariable(Token* array) {
 				//printf("new tokens from tokenizer ");
 				//printTokens(newtokens, length);
 				if (VariableFinder(newtokens)) {
-					//DefineNewVariable(newtokens);
-					printf("Adding vars to vars soon..");
-					exit(-1);
+					DefineNewVariable(newtokens);
+					//printf("Adding vars to vars soon..");
+					//exit(-1);
 					//bag here~!~
+
 				}
 				else {
 					TabsCounter -= 5;
@@ -333,7 +334,7 @@ void DefineNewVariable(Token* array) {
 					double CalculatedValue = calculate(PolishTokens);
 					//rintf("( = %.2f)", CalculatedValue);
 					KnownVars[GetIndexLetter(array[i].data)] = CalculatedValue;
-					
+					KnownVarsPositions[GetIndexLetter(array[i].data)] = 1;
 					array[i].type = VALUE;
 					array[i].value = KnownVars[GetIndexLetter(array[i].data)];
 
