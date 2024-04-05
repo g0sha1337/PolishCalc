@@ -93,9 +93,6 @@ Token dequeue(Queue* q) {
     return dequeuedValue;
 }
 
-
-
-
 void ClearToken(Token* token) {
     token->data = '\0';
     token->type = NONE;

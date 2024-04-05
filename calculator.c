@@ -2,18 +2,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdbool.h>
 #include "structures.h"
 #include "calculator.h"
 #include "tokenizer.h"
-
-
 
 int KnownVarsPositions[28] = { 0 };
 double KnownVars[28] = { '\0' };
 int TabsCounter = 0;
 
-
-
+void ClearVariables() { // Очистка значений в переменных
+	for (int i = 0; i < sizeof(KnownVarsPositions) / sizeof(KnownVarsPositions[0]); i++) {
+		KnownVarsPositions[i] = 0;
+	}
+}
 
 int PriorityDefiner(Token token) { //def
 	
@@ -143,25 +145,11 @@ Token FunctionCalculate(Token func, Token val) {
 	return token;
 }
 
-//Token FucktorialCalculation(Token val) {
-//	Token result;
-//	ClearToken(&result);
-//	if (val.value == 0) {
-//		result.type = VALUE;
-//		result.value = 1;
-//		return result;
-//	}
-//	else {
-//
-//	}
-//}
-
-
-
 int factorial(int n) {
 	if (n == 0) return 1;
 	else return n * factorial(n - 1);
 }
+
 Token OperatorCalculation(Token val1, Token val2, Token oper) {
 	Token token;
 	ClearToken(&token);
@@ -258,7 +246,7 @@ double calculate(Queue* que) {
 
 	// Freeing up the memory spent on the stack     Освобождаем память, затраченную на стек
 	free(stack);
-
+	ClearVariables();
 	return finalResult;
 }
 
@@ -281,6 +269,7 @@ int GetIndexLetter(char letter) {
 		return -1;
 	}
 }
+
 int IsPreviouslyKnownVariable(Token token) {
 	int index = GetIndexLetter(token.data);
 
@@ -290,65 +279,36 @@ int IsPreviouslyKnownVariable(Token token) {
 	return 0;
 
 }
+
 void DefineNewVariable(Token* array) {
 	for (int i = 0; array[i].type != END; i++) {
-		if (array[i].type == VARIABLE) {
-
-			// if info exist 'bout var earlier
-			if (IsPreviouslyKnownVariable(array[i])) {
-				array[i].type = VALUE;
-				array[i].value = KnownVars[GetIndexLetter(array[i].data)]; // grab known value to our variable and make it type = VALUE
+		if (array[i].type == VARIABLE && !IsPreviouslyKnownVariable(array[i])) {
+			// Вычисление значения переменной
+			double value = 0.0;
+			if (isdigit(array[i].data)) {
+				value = array[i].data - '0'; // Преобразование символа в цифру
 			}
 			else {
-				TabsCounter += 5;
-				printf("\n");
-				for (int i = 0; i < TabsCounter; i++) { //UI :3
-					printf("-");
-					}
-				char* str[256] = { '\0' };
-				printf("[%c]: ", array[i].data);
-
-
-				//getch(); // Считывает один символ без Echo на экран
-				// Очистка буфера ввода
-				int c;
-				while ((c = getchar()) != '\n' && c != EOF); // Очищаем буфер stdin, если в нём есть оставшиеся символы
+				// Пользователь вводит значение или выражение для переменной
+				printf("=======[%c]: ", array[i].data);
+				char str[256];
 				scanf("%255[^\n]", str);
+				getchar(); // Очистить буфер ввода
 
+				Token* tokens = tokenizer(str, strlen(str));
+				Queue* PolishTokens = ConvertToPolishs(tokens, strlen(str));
+				value = calculate(PolishTokens);
 
-				int length = strlen(str) + 10;
-				Token* newtokens = tokenizer(str, length);
-				//printf("new tokens from tokenizer ");
-				//printTokens(newtokens, length);
-				if (VariableFinder(newtokens)) {
-					DefineNewVariable(newtokens);
-					//printf("Adding vars to vars soon..");
-					//exit(-1);
-					//bag here~!~
-
-				}
-				else {
-					TabsCounter -= 5;
-					Queue* PolishTokens = ConvertToPolishs(newtokens, length);
-
-					double CalculatedValue = calculate(PolishTokens);
-					//rintf("( = %.2f)", CalculatedValue);
-					KnownVars[GetIndexLetter(array[i].data)] = CalculatedValue;
-					KnownVarsPositions[GetIndexLetter(array[i].data)] = 1;
-					array[i].type = VALUE;
-					array[i].value = KnownVars[GetIndexLetter(array[i].data)];
-
-					
-				}
-				//printf("\n\n\n");
-				//printTokens(newtokens, length);
-
-				free(newtokens);
-				
+				// Освободить память, выделенную под токены и очередь
+				free(tokens);
+				free(PolishTokens);
 			}
-			
 
+			// Сохранить значение переменной в KnownVars и массиве токенов
+			KnownVars[GetIndexLetter(array[i].data)] = value;
+			KnownVarsPositions[GetIndexLetter(array[i].data)] = 1;
+			array[i].type = VALUE;
+			array[i].value = value;
 		}
 	}
-	return;
 }

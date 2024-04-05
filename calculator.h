@@ -10,5 +10,3 @@ int GetIndexLetter(char letter);
 
 void DefineNewVariable(Token* array);
 int IsPreviouslyKnownVariable(Token token);
-
-

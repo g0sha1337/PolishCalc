@@ -240,3 +240,8 @@ int CheckTokenPositions(Token* tokens) { // avoid 2++ and some other incorrect i
     }
     return 1; // everything good
 }
+
+void flush_input_buffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+}

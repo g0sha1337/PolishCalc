@@ -29,9 +29,8 @@ typedef struct {
 	} func;
 
 	char data;
-	
-	double value;
 
+	double value;
 	
 } Token;
 

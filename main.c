@@ -192,6 +192,8 @@ int poland() {
     
     printf("........................................................................................................................\n\nEnter equasion to count: ");
     scanf("%99[^\n]", InputLine);
+    flush_input_buffer();
+
 
     ClearLine(InputLine);
     int length = strlen(InputLine);
@@ -216,9 +218,6 @@ int poland() {
     if (CheckBrackets(tokens, length) && CheckInput(InputLine) && CheckTokenPositions(tokens)) { //works only if input was corrects
 
         printf("\nEverything OK\n");
-
-
-        
 
         if (VariableFinder(tokens)) {
             DefineNewVariable(tokens);
@@ -246,17 +245,6 @@ int poland() {
             printf("\n\n");
             free(PolishTokens);
         }
-
-
-        
-
-        
-
-       
-        
-        
-        
-        
         
     }
     else {
