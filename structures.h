@@ -46,6 +46,7 @@ typedef struct {
 } Stack;
 
 //queue
+
 typedef struct qNode {
 	Token value;
 	struct qNode* next; //link to next element queue
