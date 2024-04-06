@@ -279,8 +279,9 @@ int IsPreviouslyKnownVariable(Token token) {
 	return 0;
 
 }
-
+int InVariableLvl = 0;
 void DefineNewVariable(Token* array) {
+	
 	for (int i = 0; array[i].type != END; i++) {
 		if (array[i].type == VARIABLE) {
 
@@ -307,11 +308,30 @@ void DefineNewVariable(Token* array) {
 				//printf("new tokens from tokenizer ");
 				//printTokens(newtokens, length);
 				if (VariableFinder(newtokens)) {
+
+					if (KnownVarsPositions[GetIndexLetter(array[i].data)] == -1) {
+						printf("Recursion with variables is not supported :/\n\n");
+						exit(-1);
+					}
+
+					InVariableLvl += 1;
+
 					DefineNewVariable(newtokens);
+					TabsCounter -= 5;
+					Queue* PolishTokens = ConvertToPolishs(newtokens, length);
+					double CalculatedValue = calculate(PolishTokens);
+
+					KnownVars[GetIndexLetter(array[i].data)] = CalculatedValue;
+
+					array[i].type = VALUE;
+					array[i].value = KnownVars[GetIndexLetter(array[i].data)];
+					KnownVarsPositions[GetIndexLetter(array[i].data)] = 1;
 					//printf("Adding vars to vars soon..");
-					exit(-1);
+					//exit(-1);
 					//bag here~!~
 				}
+
+
 				else {
 					TabsCounter -= 5;
 					Queue* PolishTokens = ConvertToPolishs(newtokens, length);

@@ -298,6 +298,7 @@ void chooseMenu()
 }
 
 int printMainMenu() {
+    int mod;
     int widht;
     HANDLE hWndConsole;
     if (hWndConsole = GetStdHandle(-12))
