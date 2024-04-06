@@ -82,7 +82,7 @@ Token* tokenizer(char* str, int size) {
 
                 
                 if (TempCharLine[0] != '\0') { // if user entired some huynya
-                    temp.type = ERROR;
+                    temp.type = __ERROR;
                     temp.func = 8;
                     array[ArrayPositionRN] = temp;
                     ArrayPositionRN++;
@@ -234,7 +234,7 @@ int CheckTokenPositions(Token* tokens) { // avoid 2++ and some other incorrect i
         if ( //trying to find wrong token positions
             (tokens[i].type == FUNCTION && tokens[i + 1].type != BRACKET_OPEN) || //  if sqrt2 or sinx instead of sqrt(2) and sin(x)
             (tokens[i].type == tokens[i+1].type && (!((tokens[i].type == BRACKET_CLOSE && tokens[i+1].type == BRACKET_CLOSE) ||(tokens[i].type == BRACKET_OPEN && tokens[i+1].type == BRACKET_OPEN)))) ||// if *+ or +- (exception with )( )
-            (tokens[i].type == ERROR)
+            (tokens[i].type == __ERROR)
             ) return 0;
         i++;
     }

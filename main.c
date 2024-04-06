@@ -5,7 +5,7 @@
 #include <malloc.h>
 #include <ctype.h>
 #include <math.h>
-
+#include <Windows.h>
 #include "structures.h"
 #include "tokenizer.h"
 #include "calculator.h"
@@ -114,8 +114,8 @@ void printTokens(Token* tokens, size_t length) {
         case BRACKET_CLOSE:
             printf("Type: BRACKET_CLOSE, Data: %c", tokens[i].data);
             break;
-        case ERROR:
-            printf("Type: ERROR");
+        case __ERROR:
+            printf("Type: __ERROR");
             break;
         }
     }
@@ -180,13 +180,15 @@ void PrintToken(Token token) {
     case BRACKET_CLOSE:
         printf("Type: BRACKET_CLOSE, Data: %c", token.data);
         break;
-    case ERROR:
-        printf("Type: ERROR");
+    case __ERROR:
+        printf("Type: __ERROR");
         break;
     }
 }
 
 int poland() {
+
+   
 
     char InputLine[256] = { '\0' };
     
@@ -287,7 +289,7 @@ void chooseMenu()
     default:
     {
         system("cls");
-        printf("Error: An invalid character was entered\n");
+        printf("__ERROR: An invalid character was entered\n");
         _getch();
         system("cls");
         break;
@@ -296,7 +298,25 @@ void chooseMenu()
 }
 
 int printMainMenu() {
-    printf("........................................................................................................................");
+    int widht;
+    HANDLE hWndConsole;
+    if (hWndConsole = GetStdHandle(-12))
+    {
+        CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+        if (GetConsoleScreenBufferInfo(hWndConsole, &consoleInfo))
+        {
+            widht = consoleInfo.srWindow.Right - consoleInfo.srWindow.Left + 1;
+            int height = consoleInfo.srWindow.Bottom - consoleInfo.srWindow.Top + 1;
+            //printf("Widht: %d\n", widht);
+            //printf("Height: %d\n", height);
+        }
+        else
+            printf("Error: %d\n", GetLastError());
+    }
+    //printf("........................................................................................................................");
+    for (int i = 0; i < widht; i++) {
+        printf(".");
+    }
     printf("\n\nBeaver calculator\n\n");
     printf("(1). Enter an expression\n");
     printf("(2). Close the program\n");

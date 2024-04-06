@@ -9,7 +9,7 @@ typedef struct {
 		FUNCTION,
 		BRACKET_OPEN,
 		BRACKET_CLOSE,
-		ERROR, 
+		__ERROR, 
 		END
 	} type;
 

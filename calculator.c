@@ -125,8 +125,8 @@ Token FunctionCalculate(Token func, Token val) {
 			token.value = sqrt(val.value);
 			return token;
 		case __factorial: //add
-			if (val.value < 0 || val.value != (int)val.value) { // Если факториал отрицательный - error
-				token.type = ERROR;
+			if (val.value < 0 || val.value != (int)val.value) { // Если факториал отрицательный - __ERROR
+				token.type = __ERROR;
 				return token;
 			}
 			else {
@@ -165,19 +165,19 @@ Token OperatorCalculation(Token val1, Token val2, Token oper) {
 		token.value = val1.value * val2.value;
 		return token;
 	case '/':
-		if (val2.value != 0) {  // It is impossible to divide by zero, otherwise an error     Делить на ноль нельзя, иначе ошибка
+		if (val2.value != 0) {  // It is impossible to divide by zero, otherwise an __ERROR     Делить на ноль нельзя, иначе ошибка
 			token.value = val1.value / val2.value;
 			return token;
 		}
 		else {
-			token.type = ERROR;
+			token.type = __ERROR;
 			return token;
 		}
 	case '^': //add
 		token.value = pow(val1.value, val2.value);
 		return token;
 	}
-	token.type = ERROR;
+	token.type = __ERROR;
 	return token;
 }
 
@@ -215,12 +215,12 @@ double calculate(Queue* que) {
 			}
 			
 			// We throw the result on the stack   Кидаем результат в стек
-			if (resultToken.type != ERROR) {
+			if (resultToken.type != __ERROR) {
 				push(stack, resultToken);
 			}
 			else {
 
-				printf("Error: Division by zero\n");
+				printf("__ERROR: Division by zero\n");
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -230,11 +230,11 @@ double calculate(Queue* que) {
 			ClearToken(&res);
 			res = FunctionCalculate(token, ValToken);
 			
-			if (res.type != ERROR) {
+			if (res.type != __ERROR) {
 				push(stack, res);
 			}
 			else {
-				printf("Error: Division by zero or something else illigal\n");
+				printf("__ERROR: Division by zero or something else illigal\n");
 				exit(-1);
 			}
 		}
@@ -307,8 +307,8 @@ void DefineNewVariable(Token* array) {
 				//printf("new tokens from tokenizer ");
 				//printTokens(newtokens, length);
 				if (VariableFinder(newtokens)) {
-					//DefineNewVariable(newtokens);
-					printf("Adding vars to vars soon..");
+					DefineNewVariable(newtokens);
+					//printf("Adding vars to vars soon..");
 					exit(-1);
 					//bag here~!~
 				}
