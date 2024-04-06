@@ -10,11 +10,33 @@
 #include "tokenizer.h"
 #include "calculator.h"
 
-void chooseMenu();
+void MenuUi();
 int printMainMenu();
 
 char WhitelistChar[] = " 1234567890+-^*!/()abcdefghijklmnopqrstuvwxyz.,";
 
+int widht;
+
+
+const char* AsciiArtLogo = ""
+"                             $$$$$$$\\            $$\\ $$\            $$\\     \n"
+"                             $$  __$$\            $$ |\__|           $$ |       \n"
+"                             $$ |  $$ | $$$$$$\\  $$ |$$\\  $$$$$$$\\ $$$$$$$\\   \n"
+"                             $$$$$$$  |$$  __$$\\ $$ |$$ |$$  _____|$$  __$$\\  \n"
+"                             $$  ____/ $$ /  $$ |$$ |$$ |\\$$$$$$\\  $$ |  $$ | \n"
+"                             $$ |      $$ |  $$ |$$ |$$ | \\____$$\\ $$ |  $$ | \n"
+"                             $$ |      \\$$$$$$  |$$ |$$ |$$$$$$$  |$$ |  $$ | \n"
+"                             \\__|       \\______/ \\__|\\__|\\_______/ \\__|  \\__| \n"
+"                                                    $$$$$$\\   $$$$$$\\  $$\\       $$$$$$\\  \n"
+"                                                   $$  __$$\\ $$  __$$\\ $$ |     $$  __$$\\ \n"
+"                                                   $$ /  \\__|$$ /  $$ |$$ |     $$ /  \\__|\n"
+"                                                   $$ |      $$$$$$$$ |$$ |     $$ |      \n"
+"                                                   $$ |      $$  __$$ |$$ |     $$ |      \n"
+"                                                   $$ |  $$\\ $$ |  $$ |$$ |     $$ |  $$\\ \n"
+"                                                   \\$$$$$$  |$$ |  $$ |$$$$$$$$\\\\$$$$$$  |\n"
+"                                                     \\______/ \\__|  \\__|\\________|\\______/ \n"
+
+;
 int contain(char x, char* str) { // WhitelistChar cheeeck
     for (int i = 0; i < strlen(str); i++) {
         if (str[i] == x) return 1;
@@ -49,6 +71,7 @@ int CheckBrackets(Token* tokens, int length) { //чек скобок
 }
 
 int CheckInput(char* str) { // чек введёных символов, что они все норм
+    if (strlen(str) == 0) return 0;
     for (int i = 0; i < strlen(str); i++) {
         if (!(contain(str[i], WhitelistChar))) return 0;
     }
@@ -56,63 +79,63 @@ int CheckInput(char* str) { // чек введёных символов, что они все норм
 }
 void printTokens(Token* tokens, size_t length) {
     for (size_t i = 0; i < length; ++i) {
-        printf("\nToken %zu: ", i);
+        //printf("\nToken %zu: ", i);
         switch (tokens[i].type) {
         case NONE:
             printf("Type: NONE");
             break;
         case VALUE:
-            printf("Type: VALUE, Value: %f", tokens[i].value);
+            printf("%.2f ", tokens[i].value);
             break;
         case VARIABLE:
-            printf("Type: VARIABLE, Data: %c", tokens[i].data);
+            printf("%c", tokens[i].data);
             break;
         case OPERAND:
-            printf("Type: OPERAND, Data: %c", tokens[i].data);
+            printf("%c ", tokens[i].data);
             break;
         case END:
-            printf("Type: END");
+            printf("= ");
             break;
         case FUNCTION:
-            printf("Type: FUNCTION, Data: %c, Function type: ", tokens[i].data);
+            //printf("%c ", tokens[i].data);
             switch (tokens[i].func) {
-            case __sin:
-                printf("sin");
+            case __sin: 
+                printf("sin ");
                 break;
             case __cos:
-                printf("cos");
+                printf("cos ");
                 break;
             case __tg:
-                printf("tg");
+                printf("tg ");
                 break;
             case __ctg:
-                printf("ctg");
+                printf("ctg ");
                 break;
             case __arcsin:
-                printf("arcsin");
+                printf("arcsin ");
                 break;
             case __arccos:
-                printf("arccos");
+                printf("arccos ");
                 break;
             case __arctg:
-                printf("arctg");
+                printf("arctg ");
                 break;
             case __arcctg:
-                printf("arcctg");
+                printf("arcctg ");
                 break;
             case __sqrt:
-                printf("sqrt");
+                printf("sqrt ");
                 break;
             case __NONE:
-                printf("none");
+                printf("none ");
                 break;
             }
             break;
         case BRACKET_OPEN:
-            printf("Type: BRACKET_OPEN, Data: %c", tokens[i].data);
+            printf("%c", tokens[i].data);
             break;
         case BRACKET_CLOSE:
-            printf("Type: BRACKET_CLOSE, Data: %c", tokens[i].data);
+            printf("%c ", tokens[i].data);
             break;
         case __ERROR:
             printf("Type: __ERROR");
@@ -134,10 +157,10 @@ void PrintToken(Token token) {
         printf("%c ", token.data);
         break;
     case OPERAND:
-        printf("%c ", token.data);
+        printf(" %c ", token.data);
         break;
     case END:
-        printf(":END:");
+        printf("= ");
         break;
     case FUNCTION:
         //printf("Type: FUNCTION, Data: %c, Function type: ", token.data);
@@ -186,6 +209,15 @@ void PrintToken(Token token) {
     }
 }
 
+
+int main() {
+
+    while (1)
+        MenuUi();
+
+    return 0;
+}
+
 int poland() {
 
    
@@ -201,15 +233,13 @@ int poland() {
     int length = strlen(InputLine);
     length++;
     Token* tokens = tokenizer(InputLine, length);
-    Token* TokensToCheckVariables = tokenizer(InputLine, length);
+    
 
     //printTokens(tokens, length);
 
 
-    printf("\n\n\n");
-    if (VariableFinder(TokensToCheckVariables)) printf("variables +");
-    else printf("variables -");
-    free(TokensToCheckVariables);
+    printf("\n\n");
+    
     //Token* tokens = (Token*)malloc(length * sizeof(Token)); //the number of tokens cannot exceed the length of the string
     //check correct expression
 
@@ -219,12 +249,43 @@ int poland() {
 
     if (CheckBrackets(tokens, length) && CheckInput(InputLine) && CheckTokenPositions(tokens)) { //works only if input was corrects
 
-        printf("\nEverything OK\n");
+        printf("\Input is correct! \n\n");
 
+        Token* TokensToCheckVariables = tokenizer(InputLine, length);
+        if (VariableFinder(TokensToCheckVariables)) printf("Enter variable values for further calculation\n");
+
+        free(TokensToCheckVariables);
         if (VariableFinder(tokens)) {
+
+
             DefineNewVariable(tokens);
             Queue* PolishTokens = ConvertToPolishs(tokens, length);
-            printf("\n\nResult: %f", calculate(PolishTokens));
+            double FinalResult = calculate(PolishTokens);
+           
+
+            if (floor(FinalResult) == FinalResult) {
+                printf("\n\n");
+                for (int i = 0; i < widht; i++) {
+                    printf("~");
+                }
+                printf("\n\n");
+                printf("Calculated equasion: ");
+                printTokens(tokens, length);
+                printf("%.0f", FinalResult);
+            }
+            else {
+                printf("\n\n");
+                for (int i = 0; i < widht; i++) {
+                    printf("~");
+                }
+                printf("\n\n");
+                printf("Calculated equasion: ");
+                printTokens(tokens, length);
+                printf("%f", FinalResult);
+            }
+
+            printf("\n\n");
+            free(PolishTokens);
         }
         else {
 
@@ -232,7 +293,7 @@ int poland() {
 
 
             Queue* PrintPolishTokens = ConvertToPolishs(tokens, length);
-            printf("\nPOLISH TOKENS: ");
+            printf("\Converted tokens to polish notation: ");
             for (int i = 0; i < length - 1; i++) {
                 Token temp;
                 ClearToken(&temp);
@@ -242,8 +303,30 @@ int poland() {
                 }
                 else break;
             }
+            printf("\n");
+            double FinalResult = calculate(PolishTokens);
 
-            printf("\n\nResult: %f", calculate(PolishTokens));
+            if (floor(FinalResult) == FinalResult) {
+                printf("\n\n");
+                for (int i = 0; i < widht; i++) {
+                    printf("~");
+                }
+                printf("\n\n");
+                printf("Calculated equasion: ");
+                printTokens(tokens, length);
+                printf("%.0f", FinalResult);
+            }
+            else {
+                printf("\n\n");
+                for (int i = 0; i < widht; i++) {
+                    printf("~");
+                }
+                printf("\n\n");
+                printf("Calculated equasion: ");
+                printTokens(tokens, length);
+                printf("%f", FinalResult);
+            }
+           
             printf("\n\n");
             free(PolishTokens);
         }
@@ -261,45 +344,32 @@ int poland() {
     return 0;
 }
 
-int main() {
 
-    while (1)
-        chooseMenu();
 
-    return 0;
-}
-
-void chooseMenu()
+void MenuUi()
 {
-    switch (printMainMenu())
-    {
-    case 49:
-    {
+    system("color 3");
+    printf(AsciiArtLogo);
+    printf("\n");
+    switch (printMainMenu()){
+    
+    case 27: {
+        printf("\nSee you next time!\n");
+        exit(0);
+        }
+    default:{
         system("cls");
         poland();
         ClearVariables();
         system("cls");
         break;
-    }
-    case 50:
-    {
-        printf("\nSee you next time!\n");
-        exit(0);
-    }
-    default:
-    {
-        system("cls");
-        printf("__ERROR: An invalid character was entered\n");
-        _getch();
-        system("cls");
-        break;
-    }
+        }
     }
 }
 
 int printMainMenu() {
     int mod;
-    int widht;
+    
     HANDLE hWndConsole;
     if (hWndConsole = GetStdHandle(-12))
     {
@@ -318,9 +388,9 @@ int printMainMenu() {
     for (int i = 0; i < widht; i++) {
         printf(".");
     }
-    printf("\n\Polish calculator\n\n");
-    printf("(1). Enter an expression\n");
-    printf("(2). Close the program\n");
+    //printf("\n\Polish calculator\n\n");
+    printf("\n\n\n\n\n                                                  To start, press any key\n\n\n\n\n");
+    printf("To exit, press [ESC]\n");
     
     return _getch();
 }
