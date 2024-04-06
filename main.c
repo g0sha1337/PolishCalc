@@ -317,8 +317,9 @@ int printMainMenu() {
     for (int i = 0; i < widht; i++) {
         printf(".");
     }
-    printf("\n\nBeaver calculator\n\n");
+    printf("\n\Polish calculator\n\n");
     printf("(1). Enter an expression\n");
     printf("(2). Close the program\n");
-    _getch();
+    
+    return _getch();
 }
