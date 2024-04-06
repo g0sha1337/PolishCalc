@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+п»ї#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -11,7 +11,7 @@ int KnownVarsPositions[28] = { 0 };
 double KnownVars[28] = { '\0' };
 int TabsCounter = 0;
 
-void ClearVariables() { // Очистка значений в переменных
+void ClearVariables() { // РћС‡РёСЃС‚РєР° Р·РЅР°С‡РµРЅРёР№ РІ РїРµСЂРµРјРµРЅРЅС‹С…
 	for (int i = 0; i < sizeof(KnownVarsPositions) / sizeof(KnownVarsPositions[0]); i++) {
 		KnownVarsPositions[i] = 0;
 	}
@@ -31,7 +31,7 @@ int PriorityDefiner(Token token) { //def
 			else if (token.data == '!' || token.data == '^') {
 				return 3;
 			}
-		case FUNCTION: // Мы добавили новый кейс для функций
+		case FUNCTION: // РњС‹ РґРѕР±Р°РІРёР»Рё РЅРѕРІС‹Р№ РєРµР№СЃ РґР»СЏ С„СѓРЅРєС†РёР№
 			return 4;	
 			
 	}
@@ -69,7 +69,7 @@ Queue* ConvertToPolishs(Token* tokens, int size) {
 			enqueue(que, pop(stack)); // Add the function to the queue after the last argument inside the brackets.
 		}
 		else if (tokens[i].type == OPERAND) {
-			while (!isEmptyStack(stack) && peek(stack).type != END) { // ѕровер¤ем, что стек не пустой и на его вершине не END
+			while (!isEmptyStack(stack) && peek(stack).type != END) { // С•СЂРѕРІРµСЂВ¤РµРј, С‡С‚Рѕ СЃС‚РµРє РЅРµ РїСѓСЃС‚РѕР№ Рё РЅР° РµРіРѕ РІРµСЂС€РёРЅРµ РЅРµ END
 				if (PriorityDefiner(tokens[i]) <= PriorityDefiner(peek(stack))) {
 					enqueue(que, pop(stack));
 				}
@@ -125,7 +125,7 @@ Token FunctionCalculate(Token func, Token val) {
 			token.value = sqrt(val.value);
 			return token;
 		case __factorial: //add
-			if (val.value < 0 || val.value != (int)val.value) { // Если факториал отрицательный - error
+			if (val.value < 0 || val.value != (int)val.value) { // Р•СЃР»Рё С„Р°РєС‚РѕСЂРёР°Р» РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Р№ - error
 				token.type = ERROR;
 				return token;
 			}
@@ -165,7 +165,7 @@ Token OperatorCalculation(Token val1, Token val2, Token oper) {
 		token.value = val1.value * val2.value;
 		return token;
 	case '/':
-		if (val2.value != 0) {  // It is impossible to divide by zero, otherwise an error     Делить на ноль нельзя, иначе ошибка
+		if (val2.value != 0) {  // It is impossible to divide by zero, otherwise an error     Р”РµР»РёС‚СЊ РЅР° РЅРѕР»СЊ РЅРµР»СЊР·СЏ, РёРЅР°С‡Рµ РѕС€РёР±РєР°
 			token.value = val1.value / val2.value;
 			return token;
 		}
@@ -191,10 +191,10 @@ double calculate(Queue* que) {
 		token = dequeue(que);
 
 		if (token.type == VALUE) {
-			push(stack, token); // If the token is a number, put it on the stack      Если токен - число, поместите его в стек
+			push(stack, token); // If the token is a number, put it on the stack      Р•СЃР»Рё С‚РѕРєРµРЅ - С‡РёСЃР»Рѕ, РїРѕРјРµСЃС‚РёС‚Рµ РµРіРѕ РІ СЃС‚РµРє
 		}
 		else if (token.type == OPERAND) {
-			// If the token is an operator, extract the top two numbers from the stack     Если токен - оператор, извлеките два верхних числа из стека
+			// If the token is an operator, extract the top two numbers from the stack     Р•СЃР»Рё С‚РѕРєРµРЅ - РѕРїРµСЂР°С‚РѕСЂ, РёР·РІР»РµРєРёС‚Рµ РґРІР° РІРµСЂС…РЅРёС… С‡РёСЃР»Р° РёР· СЃС‚РµРєР°
 			Token resultToken;
 			resultToken.type = VALUE;
 			if (token.data == '!') {
@@ -214,7 +214,7 @@ double calculate(Queue* que) {
 
 			}
 			
-			// We throw the result on the stack   Кидаем результат в стек
+			// We throw the result on the stack   РљРёРґР°РµРј СЂРµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє
 			if (resultToken.type != ERROR) {
 				push(stack, resultToken);
 			}
@@ -240,13 +240,13 @@ double calculate(Queue* que) {
 		}
 	}
 
-	// After the end of the loop, only one number should remain in the stack - the result of calculations   После завершения цикла в стеке должно остаться только одно число - результат вычислений
+	// After the end of the loop, only one number should remain in the stack - the result of calculations   РџРѕСЃР»Рµ Р·Р°РІРµСЂС€РµРЅРёСЏ С†РёРєР»Р° РІ СЃС‚РµРєРµ РґРѕР»Р¶РЅРѕ РѕСЃС‚Р°С‚СЊСЃСЏ С‚РѕР»СЊРєРѕ РѕРґРЅРѕ С‡РёСЃР»Рѕ - СЂРµР·СѓР»СЊС‚Р°С‚ РІС‹С‡РёСЃР»РµРЅРёР№
 	Token finalResultToken = pop(stack);
 	double finalResult = finalResultToken.value;
 
-	// Freeing up the memory spent on the stack     Освобождаем память, затраченную на стек
+	// Freeing up the memory spent on the stack     РћСЃРІРѕР±РѕР¶РґР°РµРј РїР°РјСЏС‚СЊ, Р·Р°С‚СЂР°С‡РµРЅРЅСѓСЋ РЅР° СЃС‚РµРє
 	free(stack);
-	ClearVariables();
+	
 	return finalResult;
 }
 
@@ -262,7 +262,7 @@ int VariableFinder(Token* array) {
 int GetIndexLetter(char letter) {
 	letter = tolower(letter);
 	if (letter >= 'a' && letter <= 'z') {
-		// Возвращаем индекс от 0 до 25
+		// Р’РѕР·РІСЂР°С‰Р°РµРј РёРЅРґРµРєСЃ РѕС‚ 0 РґРѕ 25
 		return letter - 'a';
 	}
 	else {
@@ -282,33 +282,58 @@ int IsPreviouslyKnownVariable(Token token) {
 
 void DefineNewVariable(Token* array) {
 	for (int i = 0; array[i].type != END; i++) {
-		if (array[i].type == VARIABLE && !IsPreviouslyKnownVariable(array[i])) {
-			// Вычисление значения переменной
-			double value = 0.0;
-			if (isdigit(array[i].data)) {
-				value = array[i].data - '0'; // Преобразование символа в цифру
+		if (array[i].type == VARIABLE) {
+
+			// if info exist 'bout var earlier
+			if (IsPreviouslyKnownVariable(array[i])) {
+				array[i].type = VALUE;
+				array[i].value = KnownVars[GetIndexLetter(array[i].data)]; // grab known value to our variable and make it type = VALUE
 			}
 			else {
-				// Пользователь вводит значение или выражение для переменной
-				printf("=======[%c]: ", array[i].data);
-				char str[256];
-				scanf("%255[^\n]", str);
-				getchar(); // Очистить буфер ввода
+				TabsCounter += 5;
+				printf("\n");
+				for (int i = 0; i < TabsCounter; i++) { //UI :3
+					printf("-");
+				}
+				char str[256] = { '\0' };
+				printf("[%c]: ", array[i].data);
 
-				Token* tokens = tokenizer(str, strlen(str));
-				Queue* PolishTokens = ConvertToPolishs(tokens, strlen(str));
-				value = calculate(PolishTokens);
+				
+				scanf("%255[^\n]%*c", str);
 
-				// Освободить память, выделенную под токены и очередь
-				free(tokens);
-				free(PolishTokens);
+
+				int length = strlen(str) + 10;
+				Token* newtokens = tokenizer(str, length);
+				//printf("new tokens from tokenizer ");
+				//printTokens(newtokens, length);
+				if (VariableFinder(newtokens)) {
+					//DefineNewVariable(newtokens);
+					printf("Adding vars to vars soon..");
+					exit(-1);
+					//bag here~!~
+				}
+				else {
+					TabsCounter -= 5;
+					Queue* PolishTokens = ConvertToPolishs(newtokens, length);
+
+					double CalculatedValue = calculate(PolishTokens);
+					//rintf("( = %.2f)", CalculatedValue);
+					KnownVars[GetIndexLetter(array[i].data)] = CalculatedValue;
+
+					array[i].type = VALUE;
+					array[i].value = KnownVars[GetIndexLetter(array[i].data)];
+					KnownVarsPositions[GetIndexLetter(array[i].data)] = 1;
+
+				}
+				//printf("\n\n\n");
+				//printTokens(newtokens, length);
+
+				free(newtokens);
+
 			}
 
-			// Сохранить значение переменной в KnownVars и массиве токенов
-			KnownVars[GetIndexLetter(array[i].data)] = value;
-			KnownVarsPositions[GetIndexLetter(array[i].data)] = 1;
-			array[i].type = VALUE;
-			array[i].value = value;
+
 		}
 	}
+	return;
 }

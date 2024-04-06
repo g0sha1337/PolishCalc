@@ -275,6 +275,7 @@ void chooseMenu()
     {
         system("cls");
         poland();
+        ClearVariables();
         system("cls");
         break;
     }
