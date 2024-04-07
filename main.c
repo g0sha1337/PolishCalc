@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <math.h>
 #include <Windows.h>
+
 #include "structures.h"
 #include "tokenizer.h"
 #include "calculator.h"
@@ -18,7 +19,7 @@ char WhitelistChar[] = " 1234567890+-^*!/()abcdefghijklmnopqrstuvwxyz.,";
 int widht;
 
 
-const char* AsciiArtLogo = ""
+const char* AsciiArtLogo = "\n"
 "                             $$$$$$$\\            $$\\ $$\            $$\\     \n"
 "                             $$  __$$\            $$ |\__|           $$ |       \n"
 "                             $$ |  $$ | $$$$$$\\  $$ |$$\\  $$$$$$$\\ $$$$$$$\\   \n"
@@ -211,7 +212,8 @@ void PrintToken(Token token) {
 
 
 int main() {
-
+    
+    SetConsoleTitle(L"POLISH CALC");
     while (1)
         MenuUi();
 
@@ -411,11 +413,12 @@ int printMainMenu() {
             printf("Error: %d\n", GetLastError());
     }
     //printf("........................................................................................................................");
+    
     for (int i = 0; i < widht; i++) {
         printf(".");
     }
     //printf("\n\Polish calculator\n\n");
-    printf("\n\n\n\n\n                                                  To start, press any key\n\n\n\n\n");
+    printf("\n\n\n\n\n                                                  To start, press any key\n\n\n\n");
     printf("To exit, press [ESC]\n");
     
     return _getch();
