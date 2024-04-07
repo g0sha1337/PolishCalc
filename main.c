@@ -22,19 +22,19 @@ const char* AsciiArtLogo = ""
 "                             $$$$$$$\\            $$\\ $$\            $$\\     \n"
 "                             $$  __$$\            $$ |\__|           $$ |       \n"
 "                             $$ |  $$ | $$$$$$\\  $$ |$$\\  $$$$$$$\\ $$$$$$$\\   \n"
-"                             $$$$$$$  |$$  __$$\\ $$ |$$ |$$  _____|$$  __$$\\  \n"
-"                             $$  ____/ $$ /  $$ |$$ |$$ |\\$$$$$$\\  $$ |  $$ | \n"
-"                             $$ |      $$ |  $$ |$$ |$$ | \\____$$\\ $$ |  $$ | \n"
-"                             $$ |      \\$$$$$$  |$$ |$$ |$$$$$$$  |$$ |  $$ | \n"
-"                             \\__|       \\______/ \\__|\\__|\\_______/ \\__|  \\__| \n"
-"                                                    $$$$$$\\   $$$$$$\\  $$\\       $$$$$$\\  \n"
-"                                                   $$  __$$\\ $$  __$$\\ $$ |     $$  __$$\\ \n"
-"                                                   $$ /  \\__|$$ /  $$ |$$ |     $$ /  \\__|\n"
-"                                                   $$ |      $$$$$$$$ |$$ |     $$ |      \n"
-"                                                   $$ |      $$  __$$ |$$ |     $$ |      \n"
-"                                                   $$ |  $$\\ $$ |  $$ |$$ |     $$ |  $$\\ \n"
-"                                                   \\$$$$$$  |$$ |  $$ |$$$$$$$$\\\\$$$$$$  |\n"
-"                                                     \\______/ \\__|  \\__|\\________|\\______/ \n"
+"                      x|     $$$$$$$  |$$  __$$\\ $$ |$$ |$$  _____|$$  __$$\\  \n"
+"                       |     $$  ____/ $$ /  $$ |$$ |$$ |\\$$$$$$\\  $$ |  $$ | \n"
+"                       |     $$ |      $$ |  $$ |$$ |$$ | \\____$$\\ $$ |  $$ | \n"
+"                       |     $$ |      \\$$$$$$  |$$ |$$ |$$$$$$$  |$$ |  $$ | \n"
+"                       |     \\__|       \\______/ \\__|\\__|\\_______/ \\__|  \\__| \n"
+"                       |                            $$$$$$\\   $$$$$$\\  $$\\       $$$$$$\\  \n"
+"                       |                           $$  __$$\\ $$  __$$\\ $$ |     $$  __$$\\ \n"
+"                       |______________             $$ /  \\__|$$ /  $$ |$$ |     $$ /  \\__|\n"
+"                      /              y             $$ |      $$$$$$$$ |$$ |     $$ |      \n"
+"                     /                             $$ |      $$  __$$ |$$ |     $$ |      \n"
+"                    /                              $$ |  $$\\ $$ |  $$ |$$ |     $$ |  $$\\ \n"
+"                   /                               \\$$$$$$  |$$ |  $$ |$$$$$$$$\\\\$$$$$$  |\n"
+"                 z/                                  \\______/ \\__|  \\__|\\________|\\______/ \n"
 
 ;
 int contain(char x, char* str) { // WhitelistChar cheeeck
@@ -249,7 +249,7 @@ int poland() {
 
     if (CheckBrackets(tokens, length) && CheckInput(InputLine) && CheckTokenPositions(tokens)) { //works only if input was corrects
 
-        printf("\Input is correct! \n\n");
+        //printf("\Input is correct! \n\n");
 
         Token* TokensToCheckVariables = tokenizer(InputLine, length);
         if (VariableFinder(TokensToCheckVariables)) printf("Enter variable values for further calculation\n");
@@ -264,6 +264,19 @@ int poland() {
            
 
             if (floor(FinalResult) == FinalResult) {
+
+                Queue* PrintPolishTokens = ConvertToPolishs(tokens, length);
+                printf("\nConverted tokens to polish notation: ");
+                for (int i = 0; i < length - 1; i++) {
+                    Token temp;
+                    ClearToken(&temp);
+                    temp = dequeue(PrintPolishTokens);
+                    if (temp.type != NONE) {
+                        PrintToken(temp); // 
+                    }
+                    else break;
+                }
+                printf("\n");
                 printf("\n\n");
                 for (int i = 0; i < widht; i++) {
                     printf("~");
@@ -274,6 +287,19 @@ int poland() {
                 printf("%.0f", FinalResult);
             }
             else {
+
+                Queue* PrintPolishTokens = ConvertToPolishs(tokens, length);
+                printf("\nConverted tokens to polish notation: ");
+                for (int i = 0; i < length - 1; i++) {
+                    Token temp;
+                    ClearToken(&temp);
+                    temp = dequeue(PrintPolishTokens);
+                    if (temp.type != NONE) {
+                        PrintToken(temp); // 
+                    }
+                    else break;
+                }
+                printf("\n");
                 printf("\n\n");
                 for (int i = 0; i < widht; i++) {
                     printf("~");
@@ -293,7 +319,7 @@ int poland() {
 
 
             Queue* PrintPolishTokens = ConvertToPolishs(tokens, length);
-            printf("\Converted tokens to polish notation: ");
+            printf("\nConverted tokens to polish notation: ");
             for (int i = 0; i < length - 1; i++) {
                 Token temp;
                 ClearToken(&temp);
