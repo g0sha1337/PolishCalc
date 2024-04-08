@@ -5,20 +5,19 @@
 #include "structures.h"
 #include "tokenizer.h"
 
-void ClearLine(char* equasion) {
+void ClearLine(char* expression) {
     char trimmed[1000] = { '\0' };
     int trimIndex = 0;
-    for (int i = 0; equasion[i] != '\0'; i++) { //clear from spaces and tabs
-        if (equasion[i] != ' ' && equasion[i] != '\t')
-            trimmed[trimIndex++] = equasion[i];
+    for (int i = 0; expression[i] != '\0'; i++) { //clear from spaces and tabs
+        if (expression[i] != ' ' && expression[i] != '\t')
+            trimmed[trimIndex++] = expression[i];
     }
-    strcpy(equasion, trimmed);
-    for (int i = 0; i < strlen(equasion); i++) { //swap , to . and Upper to Lowers 
-        if (equasion[i] == ',') equasion[i] = '.';
-        if (equasion[i] >= 'A' && equasion[i] <= 'Z') equasion[i] = equasion[i] + 32;
+    strcpy(expression, trimmed);
+    for (int i = 0; i < strlen(expression); i++) { //swap , to . and Upper to Lowers 
+        if (expression[i] == ',') expression[i] = '.';
+        if (expression[i] >= 'A' && expression[i] <= 'Z') expression[i] = expression[i] + 32;
     }
 }
-
 double convertStringToDouble(const char* str) {
     return strtod(str, NULL);
 }
@@ -28,8 +27,6 @@ void ClearCharArray(char* arr) {
         arr[i] = '\0';
     }
 }
-
-
 Token* tokenizer(char* str, int size) {
     Token* array = (Token*)malloc(size*2 * sizeof(Token));
     if (array == NULL) {
@@ -62,7 +59,6 @@ Token* tokenizer(char* str, int size) {
                     ArrayPositionRN++;
                     ClearToken(&temp);
                     ClearCharArray(TempCharLine);
-
                 }
                 else {
                     for (int i = 0; i < 10; i++) {
@@ -78,10 +74,7 @@ Token* tokenizer(char* str, int size) {
                     }
 
                 }
-                
-
-                
-                if (TempCharLine[0] != '\0') { // if user entired some huynya
+                if (TempCharLine[0] != '\0') { // if user entired some shit
                     temp.type = __ERROR;
                     temp.func = 8;
                     array[ArrayPositionRN] = temp;
@@ -136,7 +129,6 @@ Token* tokenizer(char* str, int size) {
                 TempCharLine[counter] = str[i];
                 counter++;
                 continue;
-
             }
             if (str[i] == '(') {
                 temp.type = BRACKET_OPEN;
@@ -192,7 +184,6 @@ Token* tokenizer(char* str, int size) {
                     ArrayPositionRN++;
                     ClearToken(&temp);
                 }
-                
             }
             else if (str[i] == '*') {
                 temp.type = OPERAND;
@@ -226,9 +217,7 @@ Token* tokenizer(char* str, int size) {
     }
     return array;
 }
-
 int CheckTokenPositions(Token* tokens) { // avoid 2++ and some other incorrect input
-    // sin ( 2 * ( 2 - 1 ) )
     int i = 0;
     while (tokens[i].type != END) {
         if ( //trying to find wrong token positions
@@ -240,7 +229,6 @@ int CheckTokenPositions(Token* tokens) { // avoid 2++ and some other incorrect i
     }
     return 1; // everything good
 }
-
 void flush_input_buffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) {}

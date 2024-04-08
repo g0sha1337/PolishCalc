@@ -11,14 +11,12 @@ int KnownVarsPositions[28] = { 0 };
 double KnownVars[28] = { '\0' };
 int TabsCounter = 0;
 
-void ClearVariables() { // Очистка значений в переменных
+void ClearVariables() { 
 	for (int i = 0; i < sizeof(KnownVarsPositions) / sizeof(KnownVarsPositions[0]); i++) {
 		KnownVarsPositions[i] = 0;
 	}
 }
-
 int PriorityDefiner(Token token) { //def
-	
 	switch (token.type)
 	{
 		case OPERAND:
@@ -31,33 +29,26 @@ int PriorityDefiner(Token token) { //def
 			else if (token.data == '!' || token.data == '^') {
 				return 3;
 			}
-		case FUNCTION: // Мы добавили новый кейс для функций
+		case FUNCTION:
 			return 4;	
 			
 	}
-
-
 	return 0; // case indefined
 }
-
 Queue* ConvertToPolishs(Token* tokens, int size) { 
-
 	int i = 0;
 	Stack* stack = NewStack();
 	initStack(stack);
 	Queue* que = NewQueue();
 	initQueue(que);
-
 	int BracketFlag = 0;
 	Token temp;
 	while (tokens[i].type != END) { // semestr.online/informatics/polish.php
-
 		if (tokens[i].type == VALUE || tokens[i].type == VARIABLE) {
 			enqueue(que, tokens[i]);
 		}
 		else if (tokens[i].type == BRACKET_OPEN) {
 			push(stack, tokens[i]);
-			
 		}
 		else if (tokens[i].type == BRACKET_CLOSE) {
 			while (!(isEmptyStack(stack)) && peek(stack).type != BRACKET_OPEN) {
@@ -69,7 +60,7 @@ Queue* ConvertToPolishs(Token* tokens, int size) {
 			enqueue(que, pop(stack)); // Add the function to the queue after the last argument inside the brackets.
 		}
 		else if (tokens[i].type == OPERAND) {
-			while (!isEmptyStack(stack) && peek(stack).type != END) { // ѕровер¤ем, что стек не пустой и на его вершине не END
+			while (!isEmptyStack(stack) && peek(stack).type != END) {
 				if (PriorityDefiner(tokens[i]) <= PriorityDefiner(peek(stack))) {
 					enqueue(que, pop(stack));
 				}
@@ -82,18 +73,14 @@ Queue* ConvertToPolishs(Token* tokens, int size) {
 		else if (tokens[i].type == FUNCTION) {
 			push(stack, tokens[i]);
 		}
-
 		i++;
 	}
-
 	while (stack->start != NULL) { // while empty stack
 		enqueue(que, pop(stack));
 	}
 	free(stack); // we are good boys 
 	return que;
-
 }
-
 Token FunctionCalculate(Token func, Token val) {
 	Token token;
 	ClearToken(&token);
@@ -125,7 +112,7 @@ Token FunctionCalculate(Token func, Token val) {
 			token.value = sqrt(val.value);
 			return token;
 		case __factorial: //add
-			if (val.value < 0 || val.value != (int)val.value) { // Если факториал отрицательный - __ERROR
+			if (val.value < 0 || val.value != (int)val.value) { 
 				token.type = __ERROR;
 				return token;
 			}
@@ -144,12 +131,10 @@ Token FunctionCalculate(Token func, Token val) {
 	}
 	return token;
 }
-
 int factorial(int n) {
 	if (n == 0) return 1;
 	else return n * factorial(n - 1);
 }
-
 Token OperatorCalculation(Token val1, Token val2, Token oper) {
 	Token token;
 	ClearToken(&token);
@@ -180,16 +165,12 @@ Token OperatorCalculation(Token val1, Token val2, Token oper) {
 	token.type = __ERROR;
 	return token;
 }
-
-
 double calculate(Queue* que) {
 	Stack* stack = NewStack();
-
 	while (peek(que).type != END) {
 		Token token;
 		ClearToken(&token);
 		token = dequeue(que);
-
 		if (token.type == VALUE) {
 			push(stack, token); // If the token is a number, put it on the stack      Если токен - число, поместите его в стек
 		}
@@ -209,12 +190,8 @@ double calculate(Queue* que) {
 			else {
 				Token operand2 = pop(stack);
 				Token operand1 = pop(stack);
-
 				resultToken = OperatorCalculation(operand1, operand2, token);
-
 			}
-			
-			// We throw the result on the stack   Кидаем результат в стек
 			if (resultToken.type != __ERROR) {
 				push(stack, resultToken);
 			}
@@ -229,7 +206,6 @@ double calculate(Queue* que) {
 			Token res;
 			ClearToken(&res);
 			res = FunctionCalculate(token, ValToken);
-			
 			if (res.type != __ERROR) {
 				push(stack, res);
 			}
@@ -239,53 +215,38 @@ double calculate(Queue* que) {
 			}
 		}
 	}
-
-	// After the end of the loop, only one number should remain in the stack - the result of calculations   После завершения цикла в стеке должно остаться только одно число - результат вычислений
 	Token finalResultToken = pop(stack);
 	double finalResult = finalResultToken.value;
-
-	// Freeing up the memory spent on the stack     Освобождаем память, затраченную на стек
 	free(stack);
-	
 	return finalResult;
 }
-
 int VariableFinder(Token* array) {
 	while (array->type != END) {
 		if (array->type == VARIABLE) return 1;
-
 		array++;
 	}
 	return 0;
 }
-
 int GetIndexLetter(char letter) {
 	letter = tolower(letter);
 	if (letter >= 'a' && letter <= 'z') {
-		// Возвращаем индекс от 0 до 25
 		return letter - 'a';
 	}
 	else {
 		return -1;
 	}
 }
-
 int IsPreviouslyKnownVariable(Token token) {
 	int index = GetIndexLetter(token.data);
-
 	if (KnownVarsPositions[index]) { //if variable was defined earlier
 		return 1;
 	}
 	return 0;
-
 }
 int InVariableLvl = 0;
 void DefineNewVariable(Token* array) {
-	
 	for (int i = 0; array[i].type != END; i++) {
 		if (array[i].type == VARIABLE) {
-
-			// if info exist 'bout var earlier
 			if (IsPreviouslyKnownVariable(array[i])) {
 				array[i].type = VALUE;
 				array[i].value = KnownVars[GetIndexLetter(array[i].data)]; // grab known value to our variable and make it type = VALUE
@@ -298,60 +259,35 @@ void DefineNewVariable(Token* array) {
 				}
 				char str[256] = { '\0' };
 				printf("[%c]: ", array[i].data);
-
-				
 				scanf("%255[^\n]%*c", str);
-
-
 				int length = strlen(str) + 10;
 				Token* newtokens = tokenizer(str, length);
-				//printf("new tokens from tokenizer ");
-				//printTokens(newtokens, length);
 				if (VariableFinder(newtokens)) {
-
 					if (KnownVarsPositions[GetIndexLetter(array[i].data)] == -1) {
 						printf("Recursion with variables is not supported :/\n\n");
 						exit(-1);
 					}
-
 					InVariableLvl += 1;
-
 					DefineNewVariable(newtokens);
 					TabsCounter -= 5;
 					Queue* PolishTokens = ConvertToPolishs(newtokens, length);
 					double CalculatedValue = calculate(PolishTokens);
-
 					KnownVars[GetIndexLetter(array[i].data)] = CalculatedValue;
-
 					array[i].type = VALUE;
 					array[i].value = KnownVars[GetIndexLetter(array[i].data)];
 					KnownVarsPositions[GetIndexLetter(array[i].data)] = 1;
-					//printf("Adding vars to vars soon..");
-					//exit(-1);
-					//bag here~!~
-				}
-
-
-				else {
+					}
+					else {
 					TabsCounter -= 5;
 					Queue* PolishTokens = ConvertToPolishs(newtokens, length);
-
 					double CalculatedValue = calculate(PolishTokens);
-					//rintf("( = %.2f)", CalculatedValue);
 					KnownVars[GetIndexLetter(array[i].data)] = CalculatedValue;
-
 					array[i].type = VALUE;
 					array[i].value = KnownVars[GetIndexLetter(array[i].data)];
 					KnownVarsPositions[GetIndexLetter(array[i].data)] = 1;
-
 				}
-				//printf("\n\n\n");
-				//printTokens(newtokens, length);
-
 				free(newtokens);
-
 			}
-
 
 		}
 	}

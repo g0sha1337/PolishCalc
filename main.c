@@ -18,7 +18,6 @@ char WhitelistChar[] = " 1234567890+-^*!/()abcdefghijklmnopqrstuvwxyz.,";
 
 int widht;
 
-
 const char* AsciiArtLogo = "\n"
 "                             $$$$$$$\\            $$\\ $$\            $$\\     \n"
 "                             $$  __$$\            $$ |\__|           $$ |       \n"
@@ -44,8 +43,7 @@ int contain(char x, char* str) { // WhitelistChar cheeeck
     }
     return 0;
 }
-
-int CheckBrackets(Token* tokens, int length) { //чек скобок
+int CheckBrackets(Token* tokens, int length) { 
     Stack* stack = NewStack();
     for (int i = 0; i < length; i++) {
         if (tokens[i].type == BRACKET_OPEN) {
@@ -64,14 +62,13 @@ int CheckBrackets(Token* tokens, int length) { //чек скобок
         }
     }
     if (isEmptyStack(stack)) {
-        return 1; //  со скобками всё ок
+        return 1; //  everything good
     }
     else {
-        return 0; // со скобками всё НЕ ок
+        return 0; // some brackets left in the stack, its not okay
     }
 }
-
-int CheckInput(char* str) { // чек введёных символов, что они все норм
+int CheckInput(char* str) { 
     if (strlen(str) == 0) return 0;
     for (int i = 0; i < strlen(str); i++) {
         if (!(contain(str[i], WhitelistChar))) return 0;
@@ -80,7 +77,6 @@ int CheckInput(char* str) { // чек введёных символов, что они все норм
 }
 void printTokens(Token* tokens, size_t length) {
     for (size_t i = 0; i < length; ++i) {
-        //printf("\nToken %zu: ", i);
         switch (tokens[i].type) {
         case NONE:
             printf("Type: NONE");
@@ -98,7 +94,6 @@ void printTokens(Token* tokens, size_t length) {
             printf("= ");
             break;
         case FUNCTION:
-            //printf("%c ", tokens[i].data);
             switch (tokens[i].func) {
             case __sin: 
                 printf("sin ");
@@ -144,9 +139,7 @@ void printTokens(Token* tokens, size_t length) {
         }
     }
 }
-
 void PrintToken(Token token) {
-
     switch (token.type) {
     case NONE:
         printf(" :NONE:");
@@ -164,7 +157,6 @@ void PrintToken(Token token) {
         printf("= ");
         break;
     case FUNCTION:
-        //printf("Type: FUNCTION, Data: %c, Function type: ", token.data);
         switch (token.func) {
         case __sin:
             printf("sin ");
@@ -209,64 +201,37 @@ void PrintToken(Token token) {
         break;
     }
 }
-
-
 int main() {
-    
     SetConsoleTitle(L"POLISH CALC");
     while (1)
         MenuUi();
-
     return 0;
 }
 
 int poland() {
-
-   
-
     char InputLine[256] = { '\0' };
-    
-    printf("........................................................................................................................\n\nEnter equasion to count: ");
+    printf("........................................................................................................................\n\nEnter expression to count: ");
     scanf("%99[^\n]", InputLine);
     flush_input_buffer();
-
-
     ClearLine(InputLine);
     int length = strlen(InputLine);
     length++;
     Token* tokens = tokenizer(InputLine, length);
-    
-
-    //printTokens(tokens, length);
-
-
     printf("\n\n");
-    
-    //Token* tokens = (Token*)malloc(length * sizeof(Token)); //the number of tokens cannot exceed the length of the string
-    //check correct expression
 
     /*if (!(CheckBrackets(tokens, length))) printf("\nCheckBrackets FAIL\n");
     if (!(CheckInput(InputLine))) printf("\nCheckInput FAIL\n");
     if (!(CheckTokenPositions(tokens))) printf("\nCheckTokenPositions FAIL\n");*/
 
     if (CheckBrackets(tokens, length) && CheckInput(InputLine) && CheckTokenPositions(tokens)) { //works only if input was corrects
-
-        //printf("\Input is correct! \n\n");
-
         Token* TokensToCheckVariables = tokenizer(InputLine, length);
         if (VariableFinder(TokensToCheckVariables)) printf("Enter variable values for further calculation\n");
-
         free(TokensToCheckVariables);
         if (VariableFinder(tokens)) {
-
-
             DefineNewVariable(tokens);
             Queue* PolishTokens = ConvertToPolishs(tokens, length);
             double FinalResult = calculate(PolishTokens);
-           
-
             if (floor(FinalResult) == FinalResult) {
-
                 Queue* PrintPolishTokens = ConvertToPolishs(tokens, length);
                 printf("\nConverted tokens to polish notation: ");
                 for (int i = 0; i < length - 1; i++) {
@@ -284,12 +249,11 @@ int poland() {
                     printf("~");
                 }
                 printf("\n\n");
-                printf("Calculated equasion: ");
+                printf("Calculated expression: ");
                 printTokens(tokens, length);
                 printf("%.0f", FinalResult);
             }
             else {
-
                 Queue* PrintPolishTokens = ConvertToPolishs(tokens, length);
                 printf("\nConverted tokens to polish notation: ");
                 for (int i = 0; i < length - 1; i++) {
@@ -307,19 +271,15 @@ int poland() {
                     printf("~");
                 }
                 printf("\n\n");
-                printf("Calculated equasion: ");
+                printf("Calculated expression: ");
                 printTokens(tokens, length);
                 printf("%f", FinalResult);
             }
-
             printf("\n\n");
             free(PolishTokens);
         }
         else {
-
             Queue* PolishTokens = ConvertToPolishs(tokens, length);
-
-
             Queue* PrintPolishTokens = ConvertToPolishs(tokens, length);
             printf("\nConverted tokens to polish notation: ");
             for (int i = 0; i < length - 1; i++) {
@@ -333,14 +293,13 @@ int poland() {
             }
             printf("\n");
             double FinalResult = calculate(PolishTokens);
-
             if (floor(FinalResult) == FinalResult) {
                 printf("\n\n");
                 for (int i = 0; i < widht; i++) {
                     printf("~");
                 }
                 printf("\n\n");
-                printf("Calculated equasion: ");
+                printf("Calculated expression: ");
                 printTokens(tokens, length);
                 printf("%.0f", FinalResult);
             }
@@ -350,30 +309,21 @@ int poland() {
                     printf("~");
                 }
                 printf("\n\n");
-                printf("Calculated equasion: ");
+                printf("Calculated expression: ");
                 printTokens(tokens, length);
                 printf("%f", FinalResult);
             }
-           
             printf("\n\n");
             free(PolishTokens);
         }
-        
     }
     else {
-        printf("Incorrect equasion");
-
+        printf("Incorrect expression");
     }
-    //printTokens(tokens, length);
-
-
     free(tokens);
     _getch();
     return 0;
 }
-
-
-
 void MenuUi()
 {
     system("color 3");
@@ -394,30 +344,23 @@ void MenuUi()
         }
     }
 }
-
 int printMainMenu() {
     int mod;
-    
     HANDLE hWndConsole;
     if (hWndConsole = GetStdHandle(-12))
     {
-        CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+        CONSOLE_SCREEN_BUFFER_INFO consoleInfo; // just ui XD, nothing more :)
         if (GetConsoleScreenBufferInfo(hWndConsole, &consoleInfo))
         {
             widht = consoleInfo.srWindow.Right - consoleInfo.srWindow.Left + 1;
             int height = consoleInfo.srWindow.Bottom - consoleInfo.srWindow.Top + 1;
-            //printf("Widht: %d\n", widht);
-            //printf("Height: %d\n", height);
         }
         else
             printf("Error: %d\n", GetLastError());
     }
-    //printf("........................................................................................................................");
-    
     for (int i = 0; i < widht; i++) {
         printf(".");
     }
-    //printf("\n\Polish calculator\n\n");
     printf("\n\n\n\n\n                                                  To start, press any key\n\n\n\n");
     printf("To exit, press [ESC]\n");
     
