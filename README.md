@@ -106,27 +106,16 @@ The calculate() function uses the token queue, which must already be in the form
 The DefineNewVariable function walks through the token array and defines the variables entered by the user. Here's how it works:
 
 1. The function starts finding tokens of type VARIABLE in the token array array, traversing it from the beginning until it encounters the END token, which signals the end of the array.
-
 2. If the token is a variable (VARIABLE), the function checks if the variable is known using the IsPreviouslyKnownVariable function. If the variable is known, its value is retrieved from the KnownVars array using the index obtained by the GetIndexLetter function. After that, the variable token is converted to the VALUE type and the retrieved value is written into it.
-
 3. If the variable is unknown, the function increments the TabsCounter variable by 5 to create an indentation in the text interface.
-
 4. Outputs hyphens according to TabsCounter and prompts the user to enter a value for the new variable, using the variable symbol for a hint.
-
 5. Using the scanf function, reads the string entered by the user and passes it to the tokenizer function, creating a new token array newtokens.
-
 6. If a new variable was found in the entered expression, the function recursively calls itself for new tokens via DefineNewVariable(newtokens).
-
 7. Decreases TabsCounter back to 5 after processing the variable, removing indentation in the text interface.
-
 8. It then calls ConvertToPolishs, passing an array of newtokens and their length to get the token queue in Polish notation.
-
 9. The calculate function is then used to calculate the value of the expression represented in Polish notation.
-
 10. The resulting value is stored in the KnownVars array at the position corresponding to that variable, and also writes the VALUE value type and the value itself to the token array with the token type changed from VARIABLE to VALUE.
-
 11. The KnownVarsPositions array changes the status of the variable to known (set to 1).
-
 12. At the end, the function frees the memory allocated for newtokens.
 
 The DefineNewVariable function plays a key role in identifying and defining variables entered by the user and in preparing these variables for expression evaluation. It provides an interactive user interface, displays error messages, and handles variable recursion.
