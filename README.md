@@ -8,6 +8,7 @@ The program was written on clearly C. Math functions realized by adding math.h l
 ![preview](imgs/ui.png)
 <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/g0sha1337/PolishCalc">
 <img alt="GitHub License" src="https://img.shields.io/github/license/g0sha1337/PolishCalc">
+<img alt="GitHub repo file or directory count" src="https://img.shields.io/github/directory-file-count/g0sha1337/PolishCalc">
 
 
 
