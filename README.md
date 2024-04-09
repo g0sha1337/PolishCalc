@@ -6,6 +6,7 @@ Console calculator using reverse-polish notation and data structures (stack and 
 The program was written on clearly C. Math functions realized by adding math.h libruary. 
 
 ![preview](imgs/ui.png)
+<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/g0sha1337/PolishCalc">
 <img alt="GitHub License" src="https://img.shields.io/github/license/g0sha1337/PolishCalc">
 
 
