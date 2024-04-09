@@ -13,8 +13,8 @@ Expression counting takes place in 4 steps (5 with variables)
 1) Tokenizing an expression for further processing 
 2) Checking the entered expression for correctness, absence of errors
 3) Converting an expression to polish notation 
-4) Calculating
-5) Calculation of entered variables
+4) Calculation main expression (if expression without variables)
+5) Calculation of entered variables for further calculation of the main expression 
 
 ### First step - Tokenization
 
