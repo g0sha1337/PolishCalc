@@ -9,7 +9,7 @@ The program was written on clearly C. Math functions realized by adding math.h l
 
 ### Main idea
 
-Expression counting takes place in 4 steps
+Expression counting takes place in 4 steps (5 with variables)
 1) Tokenizing an expression for further processing 
 2) Checking the entered expression for correctness, absence of errors
 3) Converting an expression to polish notation 
