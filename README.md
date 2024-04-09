@@ -1,6 +1,7 @@
 # Polish Calc
 
-Simple calculator using polish notation and data structures (stack and queue) with support for user-defined variables as the univercuty lab
+Console calculator using reverse-polish notation and data structures (stack and queue) with support for user-defined variables as the univercuty lab
+
 
 The program was written on clearly C. Math functions realized by adding math.h libruary. 
 
