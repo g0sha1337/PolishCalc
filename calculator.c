@@ -26,8 +26,11 @@ int PriorityDefiner(Token token) { //def
 			else if (token.data == '*' || token.data == '/') {
 				return 2;
 			}
-			else if (token.data == '!' || token.data == '^') {
+			else if (token.data == '!') {
 				return 3;
+			}
+			else if (token.data == '^') {
+				return 5;
 			}
 		case FUNCTION:
 			return 4;	
@@ -60,6 +63,15 @@ Queue* ConvertToPolishs(Token* tokens, int size) {
 			enqueue(que, pop(stack)); // Add the function to the queue after the last argument inside the brackets.
 		}
 		else if (tokens[i].type == OPERAND) {
+			while (!isEmptyStack(stack) && peek(stack).type != END &&
+				PriorityDefiner(peek(stack)) >= PriorityDefiner(tokens[i]) &&
+				(peek(stack).data != '^')) { // Проверяем, что на вершине стека не операция '^'
+				enqueue(que, pop(stack));
+			}
+			push(stack, tokens[i]);
+		}
+
+		/*else if (tokens[i].type == OPERAND) {
 			while (!isEmptyStack(stack) && peek(stack).type != END) {
 				if (PriorityDefiner(tokens[i]) <= PriorityDefiner(peek(stack))) {
 					enqueue(que, pop(stack));
@@ -69,7 +81,7 @@ Queue* ConvertToPolishs(Token* tokens, int size) {
 				}
 			}
 			push(stack, tokens[i]);
-		}
+		}*/
 		else if (tokens[i].type == FUNCTION) {
 			push(stack, tokens[i]);
 		}
