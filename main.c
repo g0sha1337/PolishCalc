@@ -91,7 +91,7 @@ void printTokens(Token* tokens, size_t length) {
             printf("%c ", tokens[i].data);
             break;
         case END:
-            printf("= ");
+            printf(" = ");
             break;
         case FUNCTION:
             switch (tokens[i].func) {
@@ -217,6 +217,11 @@ int poland() {
     int length = strlen(InputLine);
     length++;
     Token* tokens = tokenizer(InputLine, length);
+
+    //debug
+    //Token* PrintTokens = tokenizer(InputLine, length);
+    //printf("Tokenyzed: ");
+    //printTokens(PrintTokens,20);
     printf("\n\n");
 
     /*if (!(CheckBrackets(tokens, length))) printf("\nCheckBrackets FAIL\n");
@@ -273,7 +278,7 @@ int poland() {
                 printf("\n\n");
                 printf("Calculated expression: ");
                 printTokens(tokens, length);
-                printf("%f", FinalResult);
+                printf(" = %f", FinalResult);
             }
             printf("\n\n");
             free(PolishTokens);

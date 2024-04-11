@@ -53,23 +53,42 @@ Queue* ConvertToPolishs(Token* tokens, int size) {
 		else if (tokens[i].type == BRACKET_OPEN) {
 			push(stack, tokens[i]);
 		}
+
 		else if (tokens[i].type == BRACKET_CLOSE) {
 			while (!(isEmptyStack(stack)) && peek(stack).type != BRACKET_OPEN) {
 				enqueue(que, pop(stack));
 			}
-			pop(stack); // remove (
-		}
-		if (!isEmptyStack(stack) && peek(stack).type == FUNCTION) {
-			enqueue(que, pop(stack)); // Add the function to the queue after the last argument inside the brackets.
+			pop(stack); // remove '('
+
+			if (!isEmptyStack(stack) && peek(stack).type == FUNCTION) {
+				enqueue(que, pop(stack)); // Add the function to the queue after the last argument inside the brackets.
+			}
 		}
 		else if (tokens[i].type == OPERAND) {
-			while (!isEmptyStack(stack) && peek(stack).type != END &&
-				PriorityDefiner(peek(stack)) >= PriorityDefiner(tokens[i]) &&
-				(peek(stack).data != '^')) { // Проверяем, что на вершине стека не операция '^'
+			while (!isEmptyStack(stack) && peek(stack).type != BRACKET_OPEN &&
+				(PriorityDefiner(peek(stack)) > PriorityDefiner(tokens[i]) ||
+					(PriorityDefiner(peek(stack)) == PriorityDefiner(tokens[i]) &&
+						peek(stack).data != '^'))) { // Правильная обработка операндов и ассоциативности '^'
 				enqueue(que, pop(stack));
 			}
 			push(stack, tokens[i]);
 		}
+		//else if (tokens[i].type == BRACKET_CLOSE) {
+		//	while (!(isEmptyStack(stack)) && peek(stack).type != BRACKET_OPEN) {
+		//		enqueue(que, pop(stack));
+		//	}
+		//	pop(stack); // remove (
+		//} else if (!isEmptyStack(stack) && peek(stack).type == FUNCTION) {
+		//	enqueue(que, pop(stack)); // Add the function to the queue after the last argument inside the brackets.
+		//}
+		//else if (tokens[i].type == OPERAND) {
+		//	while (!isEmptyStack(stack) && peek(stack).type != END &&
+		//		PriorityDefiner(peek(stack)) >= PriorityDefiner(tokens[i]) &&
+		//		(peek(stack).data != '^')) { // Проверяем, что на вершине стека не операция '^'
+		//		enqueue(que, pop(stack));
+		//	}
+		//	push(stack, tokens[i]);
+		//}
 
 		/*else if (tokens[i].type == OPERAND) {
 			while (!isEmptyStack(stack) && peek(stack).type != END) {
@@ -163,8 +182,15 @@ Token OperatorCalculation(Token val1, Token val2, Token oper) {
 		return token;
 	case '/':
 		if (val2.value != 0) {  // It is impossible to divide by zero, otherwise an __ERROR     Делить на ноль нельзя, иначе ошибка
-			token.value = val1.value / val2.value;
-			return token;
+			if (val2.value != 0) {
+				token.value = val1.value / val2.value;
+				return token;
+			}
+			else {
+				printf("Trying divide on zer0\n");
+				exit(-1);
+			}
+			
 		}
 		else {
 			token.type = __ERROR;

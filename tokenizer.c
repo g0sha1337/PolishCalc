@@ -9,9 +9,19 @@ void ClearLine(char* expression) {
     char trimmed[1000] = { '\0' };
     int trimIndex = 0;
     for (int i = 0; expression[i] != '\0'; i++) { //clear from spaces and tabs
-        if (expression[i] != ' ' && expression[i] != '\t')
-            trimmed[trimIndex++] = expression[i];
+        if (expression[i] != ' ' && expression[i] != '\t') {
+            if (expression[i] == '*' && expression[i + 1] == '*') {
+                trimmed[trimIndex] = '^'; //  '^' â trimmed
+                i++; // Skip the next '*' character since '**' has already been processed
+            }
+            else {
+                trimmed[trimIndex] = expression[i];
+            }
+            trimIndex++; // Increment trimIndex after each character copy
+        }
     }
+    
+
     strcpy(expression, trimmed);
     for (int i = 0; i < strlen(expression); i++) { //swap , to . and Upper to Lowers 
         if (expression[i] == ',') expression[i] = '.';
@@ -166,7 +176,7 @@ Token* tokenizer(char* str, int size) {
                     ClearToken(&temp);
 
                 }
-                else if (isdigit(str[i - 1]) == 0 && str[i - 1] != ')') {
+                else if (isdigit(str[i - 1]) == 0 && str[i - 1] != ')' && isalpha(str[i - 1]) == 0) {
                     temp.type = VALUE;
                     temp.value = 0;
                     array[ArrayPositionRN] = temp;
