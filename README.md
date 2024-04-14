@@ -9,7 +9,7 @@ The program was written on clearly C. Math functions realized by adding math.h l
 <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/g0sha1337/PolishCalc">
 <img alt="GitHub License" src="https://img.shields.io/github/license/g0sha1337/PolishCalc">
 <img alt="GitHub repo file or directory count" src="https://img.shields.io/github/directory-file-count/g0sha1337/PolishCalc">
-![Lines of code](https://img.shields.io/tokei/lines/github/g0sha1337/PolishCalc)
+[![LoC](https://tokei.rs/b1/github/g0sha1337/PolishCalc?category=code)](https://github.com/g0sha1337)
 
 
 
